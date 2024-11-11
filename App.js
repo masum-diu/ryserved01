@@ -1,13 +1,26 @@
-import { View, Text } from 'react-native'
-import React from 'react'
+// In App.js in a new project
 
-const App = () => {
+import * as React from 'react';
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import HomeScreen from './src/screens/home';
+import BottomNavigation from './src/navigation/BottomNavigation';
+
+
+const Stack = createNativeStackNavigator();
+
+function RootStack() {
   return (
-    <View className="p-4 bg-slate-600">
-      <Text className="text-white capitalize">Lorem ipsum dolor sit amet consectetur adipisicing elit. Libero unde, blanditiis, neque obcaecati ullam quaerat id aspernatur aperiam dolore harum fugit fuga dignissimos, sapiente atque reprehenderit accusamus non voluptatibus quia!</Text>
-     
-    </View>
-  )
+    <Stack.Navigator screenOptions={{ headerShown: false }}>
+      <Stack.Screen name="Home" component={BottomNavigation} />
+    </Stack.Navigator>
+  );
 }
 
-export default App
+export default function App() {
+  return (
+    <NavigationContainer>
+      <RootStack />
+    </NavigationContainer>
+  );
+}
