@@ -13,10 +13,14 @@ import ProfileScreen from '../screens/grid';
 
 const PRIMARY_COLOR = "#130057";
 const SECONDARY_COLOR = "#fff";
+const { width } = Dimensions.get('window');
 
+// Define responsive padding/margins
+const tabItemPadding = width > 400 ? 20 : 10; 
+const tabItemMargin = width > 400 ? 12 : 8
 function MyTabBar({ state, descriptors, navigation }) {
   const { colors } = useTheme();
-  const { width, height } = Dimensions.get('window');
+  
 
   return (
     <View style={styles.container}>
@@ -67,7 +71,7 @@ function MyTabBar({ state, descriptors, navigation }) {
             ]}
           >
             {route.name === 'Explore' ? (
-              <View className="space-x-1" style={{ flexDirection: 'row', alignItems: 'center' }}>
+              <View className="space-x-2" style={{ flexDirection: 'row', alignItems: 'center' }}>
                 <Ionicons
                   name={isFocused ? 'book-outline' : 'book-outline'}
                   size={20}
@@ -76,40 +80,40 @@ function MyTabBar({ state, descriptors, navigation }) {
                 {isFocused && <Text className="font-bold" style={{ color: iconColor, fontSize: 12 }}>{label}</Text>}
               </View>
             ) : route.name === 'Search' ? (
-              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+              <View className="space-x-2" style={{ flexDirection: 'row', alignItems: 'center' }}>
                 <Ionicons
-                  name={isFocused ? 'search-outline' : 'search-outline'}
+                  name={isFocused ? 'search' : 'search'}
                   size={20}
                   color={iconColor}
                 />
-                {isFocused && <Text className="font-bold" style={{ color: iconColor, fontSize: 12 }}>{label}</Text>}
+                {isFocused && <Text className="font-Poppins-Bold" style={{ color: iconColor, fontSize: 12 }}>{label}</Text>}
               </View>
             ) : route.name === 'Reservation' ? (
-              <View className="space-x-1" style={{ flexDirection: 'row', alignItems: 'center' }}>
+              <View className="space-x-2" style={{ flexDirection: 'row', alignItems: 'center' }}>
                 <Ionicons
                   name={isFocused ? 'calendar-outline' : 'calendar-outline'}
                   size={20}
                   color={iconColor}
                 />
-                {isFocused && <Text className="font-bold" style={{ color: iconColor, fontSize: 12 }}>{label}</Text>}
+                {isFocused && <Text className="font-Poppins-Bold" style={{ color: iconColor, fontSize: 12 }}>{label}</Text>}
               </View>
             ) : route.name === 'Saved' ? (
-              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+              <View className="space-x-2" style={{ flexDirection: 'row', alignItems: 'center' }}>
                 <Ionicons
                   name={isFocused ? 'bookmark-outline' : 'bookmark-outline'}
                   size={20}
                   color={iconColor}
                 />
-                {isFocused && <Text className="font-bold" style={{ color: iconColor, fontSize: 12 }}>{label}</Text>}
+                {isFocused && <Text className="font-Poppins-Bold" style={{ color: iconColor, fontSize: 12 }}>{label}</Text>}
               </View>
             ) : route.name === 'More' ? (
-              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+              <View className="space-x-2" style={{ flexDirection: 'row', alignItems: 'center' }}>
                 <Ionicons
                   name={isFocused ? 'grid-outline' : 'grid-outline'}
                   size={20}
                   color={iconColor}
                 />
-                {isFocused && <Text className="font-bold" style={{ color: iconColor, marginLeft: 4, fontSize: 12 }}>{label}</Text>}
+                {isFocused && <Text className="font-Poppins-Bold" style={{ color: iconColor, marginLeft: 4, fontSize: 12 }}>{label}</Text>}
               </View>
             ) : null}
           </Pressable>
@@ -176,10 +180,10 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: "#fff",
-    // width: "98%",
+    width: "100%",
     alignSelf: "center",
     bottom: 0,
-     borderRadius: 12,
+    borderRadius: 12,
     paddingHorizontal: 12,
     paddingVertical: 15,
     shadowColor: "#073064",
@@ -192,8 +196,12 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
     height: 36,
-    paddingHorizontal: 20,
-    borderRadius: 6,
+  //  paddingHorizontal: 20,
+
+  paddingHorizontal: tabItemPadding,
+  borderRadius: 6,
+  marginHorizontal: tabItemMargin,
+    marginHorizontal:10
   },
   text: {
     color: PRIMARY_COLOR,
