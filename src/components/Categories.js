@@ -2,7 +2,7 @@
 import { ScrollView, Text, View } from 'react-native';
 import React, { useState } from 'react';
 import CategoryCard from './CategoryCard';
-
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
 const Categories = () => {
   const [selectedCategory, setSelectedCategory] = useState('All');
@@ -32,25 +32,37 @@ const Categories = () => {
 
         <CategoryCard
           onPress={() => handleCategoryPress('All')}
-          icon={"icons"}
+          icon={<Ionicons
+            name='search-outline'
+            size={20}
+          />}
           title="All"
           isSelected={selectedCategory === 'All'}
         />
         <CategoryCard
           onPress={() => handleCategoryPress('Hotel')}
-          icon={"icons"}
+          icon={<Ionicons
+            name='search-outline'
+            size={20}
+          />}
           title="American"
           isSelected={selectedCategory === 'Hotel'}
         />
         <CategoryCard
           onPress={() => handleCategoryPress('Salon')}
-          icon={"icons"}
+          icon={<Ionicons
+            name='search-outline'
+            size={20}
+          />}
           title="Offer"
           isSelected={selectedCategory === 'Salon'}
         />
         <CategoryCard
           onPress={() => handleCategoryPress('Other')}
-          icon={"icons"}
+          icon={<Ionicons
+            name='search-outline'
+            size={20}
+          />}
           title="Other"
           isSelected={selectedCategory === 'Other'}
         />

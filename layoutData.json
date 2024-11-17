@@ -1,0 +1,93 @@
+[
+    {
+        "id": 1,
+        "title": "Promotional Banner",
+        "subtitle": "Promotional Banner",
+        "pattern": "promotional-banner",
+        "type": "PROPERTY",
+        "group": "RESTAURANT",
+        "content": [
+            {
+                "linkTo": 3,
+                "bannerImage": "https://eltorobd.com/images/offer-6.jpg"
+            },
+            {
+                "linkTo": 1,
+                "bannerImage": "https://eltorobd.com/images/offer-5.jpg"
+            }
+        ],
+        "status": true,
+        "signature": 1
+    },
+    {
+        "id": 2,
+        "title": "Feature Restaurant",
+        "subtitle": "All The Ryserved Feature Restaurant",
+        "pattern": "slider",
+        "type": "PROPERTY",
+        "group": "RESTAURANT",
+        "content": null,
+        "status": true,
+        "signature": 2
+    },
+    {
+        "id": 3,
+        "title": "Ads Banner",
+        "subtitle": "Special Ads Banner",
+        "pattern": "banner-ads",
+        "type": "OTHER",
+        "group": "RESTAURANT",
+        "content": [
+            {
+                "linkTo": 4,
+                "bannerImage": "https://eltorobd.com/images/menu-3-9-img.jpg"
+            }
+           
+        ],
+        "status": true,
+        "signature": 3
+    },
+    {
+        "id": 4,
+        "title": "Exclusive At Ryserved",
+        "subtitle": "All the Exclusive at Ryserved",
+        "pattern": "slider",
+        "type": "PROPERTY",
+        "group": "RESTAURANT",
+        "content": null,
+        "status": true,
+        "signature": 4
+    },
+    {
+        "id": 5,
+        "title": "Top Restaurant",
+        "subtitle": "Chef's special mentions",
+        "pattern": "promotional-logo",
+        "type": "PROPERTY",
+        "group": "RESTAURANT",
+        "content": [
+            {
+                "linkTo": 6,
+                "bannerImage": "https://t3.ftcdn.net/jpg/02/79/05/49/360_F_279054989_5nSySJeOaxRVHS5F2Z5OgKNcpEAV9B11.jpg"
+            }
+        ],
+        "status": true,
+        "signature": 5
+    },
+    {
+        "id": 6,
+        "title": "Spotlight Restaurant",
+        "subtitle": "Chef's spotlight mentions",
+        "pattern": "food-promotion",
+        "type": "FOOD",
+        "group": "RESTAURANT",
+        "content": [
+            {
+                "linkTo": 7,
+                "bannerImage": "https://t3.ftcdn.net/jpg/01/18/69/57/360_F_118695756_j9ynFOA53oMrRAWeQXYf8T3uMgU9DSkN.jpg"
+            }
+        ],
+        "status": true,
+        "signature": 6
+    }
+]
