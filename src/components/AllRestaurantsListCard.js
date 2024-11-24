@@ -1,6 +1,7 @@
 import { View, Text, TouchableOpacity, Image } from 'react-native'
 import React from 'react'
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import Feather from 'react-native-vector-icons/Feather';
 import { useNavigation } from '@react-navigation/native'
 
 const AllRestaurantsListCard = ({
@@ -25,9 +26,9 @@ const AllRestaurantsListCard = ({
                 <Text className="font-Poppins-Medium text-lg pt-2" style={{ fontSize: 14 }}>{title}</Text>
                 <View className="flex-col space-x-3 mt-1">
                     <View className="flex-row space-x-1 items-center mt-1">
-                        <Ionicons
-                            name='pin'
-                            color={"DC4A45"} size={14}
+                    <Feather
+                            name='map-pin'
+                            color={"#DC4A45"} size={14}
                         />
                         <Text className="text-xs">
                             <Text className="font-Poppins-Light" style={{ color: "#B5B5B5", fontSize: 10,}}>{address}</Text>

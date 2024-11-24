@@ -16,11 +16,11 @@ const SECONDARY_COLOR = "#fff";
 const { width } = Dimensions.get('window');
 
 // Define responsive padding/margins
-const tabItemPadding = width > 400 ? 20 : 10; 
+const tabItemPadding = width > 400 ? 20 : 10;
 const tabItemMargin = width > 400 ? 12 : 8
 function MyTabBar({ state, descriptors, navigation }) {
   const { colors } = useTheme();
-  
+
 
   return (
     <View style={styles.container}>
@@ -183,7 +183,9 @@ const styles = StyleSheet.create({
     width: "100%",
     alignSelf: "center",
     bottom: 0,
-    borderRadius: 12,
+    borderTopLeftRadius: 12,
+    borderTopRightRadius: 12,
+    // borderRadius: 12,
     paddingHorizontal: 12,
     paddingVertical: 15,
     shadowColor: "#073064",
@@ -196,12 +198,12 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
     height: 36,
-  //  paddingHorizontal: 20,
+    //  paddingHorizontal: 20,
 
-  paddingHorizontal: tabItemPadding,
-  borderRadius: 6,
-  marginHorizontal: tabItemMargin,
-    marginHorizontal:10
+    paddingHorizontal: tabItemPadding,
+    borderRadius: 6,
+    marginHorizontal: tabItemMargin,
+    marginHorizontal: 10
   },
   text: {
     color: PRIMARY_COLOR,

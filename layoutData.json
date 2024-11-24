@@ -26,7 +26,43 @@
         "pattern": "slider",
         "type": "PROPERTY",
         "group": "RESTAURANT",
-        "content": null,
+        "content": [
+            {
+                "id": 1,
+                "image": "https://t4.ftcdn.net/jpg/02/94/26/33/360_F_294263329_1IgvqNgDbhmQNgDxkhlW433uOFuIDar4.jpg",
+                "Title": "Sultan's Dine-Gulshan Branch",
+                "loacation": "Dhaka",
+                "pinpoint": "10 m"
+            },
+            {
+                "id": 2,
+                "image": "https://t4.ftcdn.net/jpg/02/94/26/33/360_F_294263329_1IgvqNgDbhmQNgDxkhlW433uOFuIDar4.jpg",
+                "Title": "Sultan's Dine-Gulshan Branch",
+                "loacation": "Dhaka",
+                "pinpoint": "10 m"
+            },
+            {
+                "id": 3,
+                "image": "https://t4.ftcdn.net/jpg/02/94/26/33/360_F_294263329_1IgvqNgDbhmQNgDxkhlW433uOFuIDar4.jpg",
+                "Title": "Sultan's Dine-Gulshan Branch",
+                "loacation": "Dhaka",
+                "pinpoint": "10 m"
+            },
+            {
+                "id": 4,
+                "image": "https://t4.ftcdn.net/jpg/02/94/26/33/360_F_294263329_1IgvqNgDbhmQNgDxkhlW433uOFuIDar4.jpg",
+                "Title": "Sultan's Dine-Gulshan Branch",
+                "loacation": "Dhaka",
+                "pinpoint": "10 m"
+            },
+            {
+                "id": 5,
+                "image": "https://t4.ftcdn.net/jpg/02/94/26/33/360_F_294263329_1IgvqNgDbhmQNgDxkhlW433uOFuIDar4.jpg",
+                "Title": "Sultan's Dine-Gulshan Branch",
+                "loacation": "Dhaka",
+                "pinpoint": "10 m"
+            }
+        ],
         "status": true,
         "signature": 2
     },
@@ -42,7 +78,6 @@
                 "linkTo": 4,
                 "bannerImage": "https://eltorobd.com/images/menu-3-9-img.jpg"
             }
-           
         ],
         "status": true,
         "signature": 3
@@ -54,21 +89,73 @@
         "pattern": "slider",
         "type": "PROPERTY",
         "group": "RESTAURANT",
-        "content": null,
+        "content": [
+            {
+                "id": 1,
+                "image": "https://t4.ftcdn.net/jpg/02/94/26/33/360_F_294263329_1IgvqNgDbhmQNgDxkhlW433uOFuIDar4.jpg",
+                "Title": "Sultan's Dine-Gulshan Branch",
+                "loacation": "Dhaka",
+                "pinpoint": "10m"
+            },
+            {
+                "id": 2,
+                "image": "https://t4.ftcdn.net/jpg/02/94/26/33/360_F_294263329_1IgvqNgDbhmQNgDxkhlW433uOFuIDar4.jpg",
+                "Title": "Sultan's Dine-Gulshan Branch",
+                "loacation": "Dhaka",
+                "pinpoint": "10 m"
+            },
+            {
+                "id": 3,
+                "image": "https://t4.ftcdn.net/jpg/02/94/26/33/360_F_294263329_1IgvqNgDbhmQNgDxkhlW433uOFuIDar4.jpg",
+                "Title": "Sultan's Dine-Gulshan Branch",
+                "loacation": "Dhaka",
+                "pinpoint": "10 m"
+            },
+            {
+                "id": 4,
+                "image": "https://t4.ftcdn.net/jpg/02/94/26/33/360_F_294263329_1IgvqNgDbhmQNgDxkhlW433uOFuIDar4.jpg",
+                "Title": "Sultan's Dine-Gulshan Branch",
+                "loacation": "Dhaka",
+                "pinpoint": "10 m"
+            },
+            {
+                "id": 5,
+                "image": "https://t4.ftcdn.net/jpg/02/94/26/33/360_F_294263329_1IgvqNgDbhmQNgDxkhlW433uOFuIDar4.jpg",
+                "Title": "Sultan's Dine-Gulshan Branch",
+                "loacation": "Dhaka",
+                "pinpoint": "10 m"
+            }
+        ],
         "status": true,
         "signature": 4
     },
     {
         "id": 5,
         "title": "Top Restaurant",
-        "subtitle": "Chef's special mentions",
+        "subtitle": "Reserved Top Restaurants",
         "pattern": "promotional-logo",
         "type": "PROPERTY",
         "group": "RESTAURANT",
         "content": [
             {
                 "linkTo": 6,
-                "bannerImage": "https://t3.ftcdn.net/jpg/02/79/05/49/360_F_279054989_5nSySJeOaxRVHS5F2Z5OgKNcpEAV9B11.jpg"
+                "bannerImage": "https://logos-download.com/wp-content/uploads/2016/03/KFC_Logo_2018.png"
+            },
+            {
+                "linkTo": 6,
+                "bannerImage": "https://logos-download.com/wp-content/uploads/2016/03/KFC_Logo_2018.png"
+            },
+            {
+                "linkTo": 6,
+                "bannerImage": "https://logos-download.com/wp-content/uploads/2016/03/KFC_Logo_2018.png"
+            },
+            {
+                "linkTo": 6,
+                "bannerImage": "https://logos-download.com/wp-content/uploads/2016/03/KFC_Logo_2018.png"
+            },
+            {
+                "linkTo": 6,
+                "bannerImage": "https://logos-download.com/wp-content/uploads/2016/03/KFC_Logo_2018.png"
             }
         ],
         "status": true,
@@ -84,8 +171,28 @@
         "content": [
             {
                 "linkTo": 7,
-                "bannerImage": "https://t3.ftcdn.net/jpg/01/18/69/57/360_F_118695756_j9ynFOA53oMrRAWeQXYf8T3uMgU9DSkN.jpg"
+                "bannerImage": "https://kfcbd.com/storage/products/niY8RGAUMTfrHqxaKEHhyZPts.jpg",
+                "logo": "https://logos-download.com/wp-content/uploads/2016/03/KFC_Logo_2018.png",
+                "title": "KFC Bangladesh",
+                "subtitle": "Fast Food- Amirican",
+                "address": "Gulshan Branch"
+            },
+            {
+                "linkTo": 7,
+                "bannerImage": "https://kfcbd.com/storage/products/niY8RGAUMTfrHqxaKEHhyZPts.jpg"
+               
+            },
+            {
+                "linkTo": 7,
+                "bannerImage": "https://kfcbd.com/storage/products/niY8RGAUMTfrHqxaKEHhyZPts.jpg"
+               
+            },
+            {
+                "linkTo": 7,
+                "bannerImage": "https://kfcbd.com/storage/products/niY8RGAUMTfrHqxaKEHhyZPts.jpg"
+              
             }
+           
         ],
         "status": true,
         "signature": 6

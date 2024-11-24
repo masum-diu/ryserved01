@@ -12,16 +12,17 @@ const CategoryPageScreen = ({ navigation }) => {
     useEffect(() => {
         setTimeout(() => {
             setLoading(false);
-        }, 1000); 
+        }, 1000);
     }, []);
 
     return (
-        <ScrollView style={{ backgroundColor: "#E6EAF0" }}>
+        <ScrollView style={{ backgroundColor: "#E6EAF0" }} bounces={false}
+            overScrollMode="never">
             <View className="m-4 space-y-4">
                 <View className="flex-row justify-between items-center">
-                    <TouchableOpacity 
-                        className="bg-white h-8 w-8 flex-row items-center justify-center rounded-md" 
-                        style={{ borderColor: '#DBDBDB', borderWidth: 1 }} 
+                    <TouchableOpacity
+                        className="bg-white h-8 w-8 flex-row items-center justify-center rounded-md"
+                        style={{ borderColor: '#DBDBDB', borderWidth: 1 }}
                         onPress={() => navigation.goBack()}
                     >
                         <Ionicons name="chevron-back-outline" size={20} />
