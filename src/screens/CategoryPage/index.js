@@ -8,7 +8,6 @@ const CategoryPageScreen = ({ navigation }) => {
     const route = useRoute();
     const { category } = route.params;
     const [loading, setLoading] = useState(true);
-
     useEffect(() => {
         setTimeout(() => {
             setLoading(false);
@@ -28,7 +27,7 @@ const CategoryPageScreen = ({ navigation }) => {
                         <Ionicons name="chevron-back-outline" size={20} />
                     </TouchableOpacity>
                     <Text> </Text>
-                    <Text className="font-Poppins-SemiBold">{category?.title}</Text>
+                    <Text className="font-Poppins-SemiBold">{category}</Text>
                     <Text> </Text>
                     <Text> </Text>
                 </View>
@@ -40,12 +39,12 @@ const CategoryPageScreen = ({ navigation }) => {
                     </View>
                 ) : (
                     <View>
-                        <AllRestaurantsListCard imgUrl="https://eltorobd.com/images/img-01.jpg" title={category?.title} address={"Gulshan 2"} rating={4.7} distance={"1.2 km"} />
-                        <AllRestaurantsListCard imgUrl="https://media.gettyimages.com/id/1983342381/photo/culinary-delights-display-yokohama-chinatown-food-models.jpg?s=612x612&w=0&k=20&c=w7cfujuvC9GBCmHlCnHx04y17gbv4c3mvHvBAT5Gh3Y=" title={category?.title} address={"Gulshan 2"} rating={4.7} distance={"1.2 km"} />
-                        <AllRestaurantsListCard imgUrl="https://media.gettyimages.com/id/1983342381/photo/culinary-delights-display-yokohama-chinatown-food-models.jpg?s=612x612&w=0&k=20&c=w7cfujuvC9GBCmHlCnHx04y17gbv4c3mvHvBAT5Gh3Y=" title={category?.title} address={"Gulshan 2"} rating={4.7} distance={"1.2 km"} />
-                        <AllRestaurantsListCard imgUrl="https://media.gettyimages.com/id/1983342381/photo/culinary-delights-display-yokohama-chinatown-food-models.jpg?s=612x612&w=0&k=20&c=w7cfujuvC9GBCmHlCnHx04y17gbv4c3mvHvBAT5Gh3Y=" title={category?.title} address={"Gulshan 2"} rating={4.7} distance={"1.2 km"} />
-                        <AllRestaurantsListCard imgUrl="https://popmenucloud.com/cdn-cgi/image/width%3D1200%2Cheight%3D1200%2Cfit%3Dscale-down%2Cformat%3Dauto%2Cquality%3D60/mqobygcn/3a846780-67ee-4e0b-b3f3-2e1a32ca1de1.jpg" title={category?.title} address={"Gulshan 2"} rating={4.7} distance={"1.2 km"} />
-                        <AllRestaurantsListCard imgUrl="https://media.gettyimages.com/id/1983342381/photo/culinary-delights-display-yokohama-chinatown-food-models.jpg?s=612x612&w=0&k=20&c=w7cfujuvC9GBCmHlCnHx04y17gbv4c3mvHvBAT5Gh3Y=" title={category?.title} address={"Gulshan 2"} rating={4.7} distance={"1.2 km"} />
+                        <AllRestaurantsListCard imgUrl="https://eltorobd.com/images/img-01.jpg" title={category} address={"Gulshan 2"} rating={4.7} distance={"1.2 km"} />
+                        <AllRestaurantsListCard imgUrl="https://media.gettyimages.com/id/1983342381/photo/culinary-delights-display-yokohama-chinatown-food-models.jpg?s=612x612&w=0&k=20&c=w7cfujuvC9GBCmHlCnHx04y17gbv4c3mvHvBAT5Gh3Y=" title={category} address={"Gulshan 2"} rating={4.7} distance={"1.2 km"} />
+                        <AllRestaurantsListCard imgUrl="https://media.gettyimages.com/id/1983342381/photo/culinary-delights-display-yokohama-chinatown-food-models.jpg?s=612x612&w=0&k=20&c=w7cfujuvC9GBCmHlCnHx04y17gbv4c3mvHvBAT5Gh3Y=" title={category} address={"Gulshan 2"} rating={4.7} distance={"1.2 km"} />
+                        <AllRestaurantsListCard imgUrl="https://media.gettyimages.com/id/1983342381/photo/culinary-delights-display-yokohama-chinatown-food-models.jpg?s=612x612&w=0&k=20&c=w7cfujuvC9GBCmHlCnHx04y17gbv4c3mvHvBAT5Gh3Y=" title={category} address={"Gulshan 2"} rating={4.7} distance={"1.2 km"} />
+                        <AllRestaurantsListCard imgUrl="https://popmenucloud.com/cdn-cgi/image/width%3D1200%2Cheight%3D1200%2Cfit%3Dscale-down%2Cformat%3Dauto%2Cquality%3D60/mqobygcn/3a846780-67ee-4e0b-b3f3-2e1a32ca1de1.jpg" title={category} address={"Gulshan 2"} rating={4.7} distance={"1.2 km"} />
+                        <AllRestaurantsListCard imgUrl="https://media.gettyimages.com/id/1983342381/photo/culinary-delights-display-yokohama-chinatown-food-models.jpg?s=612x612&w=0&k=20&c=w7cfujuvC9GBCmHlCnHx04y17gbv4c3mvHvBAT5Gh3Y=" title={category} address={"Gulshan 2"} rating={4.7} distance={"1.2 km"} />
                     </View>
                 )}
             </View>

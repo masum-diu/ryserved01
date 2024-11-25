@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { ActivityIndicator, ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import PromotionalBanner from './PromotionalBanner';
@@ -9,13 +9,38 @@ import Foodpromotion from './Foodpromotion';
 import CategoryCard from './CategoryCard';
 import AllRestaurantsListCard from './AllRestaurantsListCard';
 import { useNavigation } from '@react-navigation/native';
+import instance from '../api/api_instance';
 
 const LayoutManager = ({ data, isLoading }) => {
     const navigation = useNavigation();
+    const [loading, setLoading] = useState(false);
+    const [cuisineData, setCuisineData] = useState([]);
+    const fetchDatacuisine = async () => {
+        try {
+            setLoading(true);
+            const response = await instance.get('/cuisine', {
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            });
+            if (response?.data) {
+                setCuisineData(response?.data);
+            }
+            setLoading(false);
+        } catch (error) {
+            console.error(error);
+            setLoading(false);
+        }
+    };
+
+    useEffect(() => {
+        fetchDatacuisine();
+    }, []);
+
 
     const handleCategoryPress = useCallback((category) => {
         navigation.navigate('CategoryPage', { category });
-    }, [navigation]);
+    });
 
 
     const renderPatternComponent = (item) => {
@@ -27,21 +52,21 @@ const LayoutManager = ({ data, isLoading }) => {
             case 'banner-ads':
                 return <BannerAds key={item.id} content={item.content} />;
             case 'promotional-logo':
-                return <Promotionallogo key={item.id} content={item.content} title={item.title} subtitle={item.subtitle} />;
+                return <Promotionallogo key={item.id} content={item.content} title={item.title} subtitle={item.subtitle} signature={item.signature} />;
             case 'food-promotion':
-                return <Foodpromotion key={item.id} content={item.content} title={item.title} subtitle={item.subtitle} />;
+                return <Foodpromotion key={item.id} content={item.content} title={item.title} subtitle={item.subtitle} signature={item.signature} />;
             default:
                 return null;
         }
     };
 
     return (
-        <ScrollView className="mb-12" >
+        <ScrollView  >
             <View>
                 <View style={{ backgroundColor: '#073064' }}>
                     <TouchableOpacity>
                         <View
-                            className="flex-row space-x-3  items-center m-4 px-3"
+                            className="flex-row space-x-3 items-center m-4 px-3"
                             style={{
                                 backgroundColor: '#ffff',
                                 borderRadius: 6,
@@ -62,11 +87,11 @@ const LayoutManager = ({ data, isLoading }) => {
                     horizontal
                     showsHorizontalScrollIndicator={false}
                 >
-                    {data?.map((item) => (
+                    {cuisineData?.map((item) => (
                         <CategoryCard
                             key={item.id}
-                            onPress={() => handleCategoryPress(item)}
-                            title={item.title}
+                            onPress={() => handleCategoryPress(item.name)}
+                            title={item.name}
                         />
                     ))}
                 </ScrollView>

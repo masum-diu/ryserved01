@@ -5,8 +5,9 @@ import instance from '../api/api_instance';
 
 const Slider = ({ title, subtitle, content, signature }) => {
     const [loading, setLoading] = useState(false);
-    const [homeData, setHomeData] = useState([]);
-    const fetchData = async () => {
+    const [sliderData, setSliderData] = useState([]);
+    console.log(sliderData)
+    const fetchSliderData = async () => {
         try {
             setLoading(true);
             const response = await instance.get(`/property?group=RESTAURANT&signature=${signature}`, {
@@ -15,7 +16,7 @@ const Slider = ({ title, subtitle, content, signature }) => {
                 },
             });
             if (response?.data) {
-                setHomeData(response?.data?.data);
+                setSliderData(response?.data?.data);
             }
         } catch (error) {
             console.error('Error fetching data:', error);
@@ -25,7 +26,7 @@ const Slider = ({ title, subtitle, content, signature }) => {
     };
 
     useEffect(() => {
-        fetchData();
+        fetchSliderData();
     }, []);
 
     return (
@@ -41,8 +42,8 @@ const Slider = ({ title, subtitle, content, signature }) => {
                     horizontal
                     showsHorizontalScrollIndicator={false}
                 >
-                    {homeData.length > 0 ? (
-                        homeData.map((item, index) => (
+                    {sliderData.length > 0 ? (
+                        sliderData?.map((item, index) => (
                             <PopularRestaurantsCard
                                 key={index}
                                 imgUrl={item?.images?.[0]?.link}
