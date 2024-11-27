@@ -6,7 +6,6 @@ import instance from '../api/api_instance';
 const Slider = ({ title, subtitle, content, signature }) => {
     const [loading, setLoading] = useState(false);
     const [sliderData, setSliderData] = useState([]);
-    console.log(sliderData)
     const fetchSliderData = async () => {
         try {
             setLoading(true);
@@ -48,6 +47,7 @@ const Slider = ({ title, subtitle, content, signature }) => {
                                 key={index}
                                 imgUrl={item?.images?.[0]?.link}
                                 title={item?.listingName}
+                                id={item?.id}
                             />
                         ))
                     ) : (

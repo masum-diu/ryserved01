@@ -5,6 +5,8 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import BottomNavigation from './src/navigation/BottomNavigation';
 import CategoryPageScreen from './src/screens/CategoryPage';
+import ViewRestaurant from './src/screens/viewRestaurants';
+import { AuthProvider } from './src/util/AuthContext';
 
 
 const Stack = createNativeStackNavigator();
@@ -14,6 +16,7 @@ function RootStack() {
     <Stack.Navigator screenOptions={{ headerShown: false }} options={{ freezeOnBlur: true }}>
       <Stack.Screen name="Home" component={BottomNavigation} />
       <Stack.Screen name="CategoryPage" component={CategoryPageScreen} />
+      <Stack.Screen name="ViewRestaurant" component={ViewRestaurant} />
     </Stack.Navigator>
   );
 }
@@ -21,7 +24,9 @@ function RootStack() {
 export default function App() {
   return (
     <NavigationContainer>
-      <RootStack />
+      <AuthProvider>
+        <RootStack />
+      </AuthProvider>
     </NavigationContainer>
   );
 }
