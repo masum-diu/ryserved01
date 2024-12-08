@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, Text, Dimensions, StyleSheet, Pressable } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { useTheme } from '@react-navigation/native';
@@ -9,8 +9,9 @@ import HomeScreen from '../screens/home';
 import SearchScreen from '../screens/search';
 import ReserveScreen from '../screens/calendar';
 import SaveScreen from '../screens/save';
-import ProfileScreen from '../screens/grid';
-
+import ProfileScreen from '../screens/Profile';
+import CustomModal from '../components/CustomModal';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 const PRIMARY_COLOR = "#130057";
 const SECONDARY_COLOR = "#fff";
 const { width } = Dimensions.get('window');
@@ -20,7 +21,20 @@ const tabItemPadding = width > 400 ? 20 : 10;
 const tabItemMargin = width > 400 ? 12 : 8
 function MyTabBar({ state, descriptors, navigation }) {
   const { colors } = useTheme();
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const authCheck = async () => {
+    const token = await AsyncStorage.getItem('token');
+    return token !== null && token !== undefined;
+  };
 
+  const handleMoreTabPress = async () => {
+    const isAuthenticated = await authCheck();
+    if (isAuthenticated) {
+      navigation.navigate('More');
+    } else {
+      setIsModalVisible(true);
+    }
+  };
 
   return (
     <View style={styles.container}>
@@ -50,7 +64,11 @@ function MyTabBar({ state, descriptors, navigation }) {
           });
 
           if (!isFocused && !event.defaultPrevented) {
-            navigation.navigate(route.name, route.params);
+            if (route.name === 'More') {
+              handleMoreTabPress();
+            } else {
+              navigation.navigate(route.name, route.params);
+            }
           }
         };
 
@@ -119,6 +137,7 @@ function MyTabBar({ state, descriptors, navigation }) {
           </Pressable>
         );
       })}
+       <CustomModal visible={isModalVisible} onClose={() => setIsModalVisible(false)} />
     </View>
   );
 }

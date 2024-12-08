@@ -10,6 +10,8 @@
     "test": "jest"
   },
   "dependencies": {
+    "@react-native-async-storage/async-storage": "^2.1.0",
+    "@react-native-community/datetimepicker": "^8.2.0",
     "@react-navigation/bottom-tabs": "^7.0.1",
     "@react-navigation/elements": "^2.0.0",
     "@react-navigation/native": "^7.0.0",
@@ -19,6 +21,7 @@
     "react": "18.3.1",
     "react-native": "0.76.1",
     "react-native-calendar-strip": "^2.2.6",
+    "react-native-calendars": "^1.1307.0",
     "react-native-elements": "^3.4.3",
     "react-native-heroicons": "^4.0.0",
     "react-native-reanimated": "^3.16.1",
@@ -26,6 +29,7 @@
     "react-native-screens": "^4.0.0",
     "react-native-svg": "^15.8.0",
     "react-native-swiper": "^1.6.0",
+    "react-native-ui-datepicker": "^2.0.4",
     "react-native-vector-icons": "^10.2.0"
   },
   "devDependencies": {

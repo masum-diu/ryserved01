@@ -7,6 +7,8 @@ import { useRoute } from '@react-navigation/native';
 import instance from '../../api/api_instance';
 import CalenderComponents from '../../components/CalenderComponents';
 import CustomSelectList from '../../components/CustomSelectList';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import CustomModal from '../../components/CustomModal';
 
 const ViewRestaurant = ({ navigation }) => {
     const [singleData, setSingleData] = useState([])
@@ -22,7 +24,8 @@ const ViewRestaurant = ({ navigation }) => {
     const [selectedSlot, setSelectedSlot] = useState(null);
     const [tableId, setTableId] = useState(null)
     const { width, height } = Dimensions.get('window');
-    const dateString = selectDate; 
+    const [isModalVisible, setIsModalVisible] = useState(false);
+    const dateString = selectDate;
     const positions = singleData?.branches?.[0]?.tables?.map(table => table?.position) || [];
 
     // useEffect(() => {
@@ -67,7 +70,7 @@ const ViewRestaurant = ({ navigation }) => {
         };
         fetchAvailableSlots();
     }, [dateString, singleData]);
-    
+
     useEffect(() => {
         // console.log("getdata:", getdata); // Log the entire getdata object
         // if (singleData?.tables.length > 0) {
@@ -107,6 +110,7 @@ const ViewRestaurant = ({ navigation }) => {
         // Ensure count doesn't go below 1
         setCount((prevCount) => (prevCount > 1 ? prevCount - 1 : 1));
     };
+
     const fetchSingleData = async () => {
         try {
             setLoading(true);
@@ -131,6 +135,19 @@ const ViewRestaurant = ({ navigation }) => {
     const handleCategoryPress = (category) => {
         // Toggle the selected category
         setSelectedCategory(selectedCategory === category ? category : category);
+    };
+
+    const authCheck = async () => {
+        const token = await AsyncStorage.getItem('token');
+        return token !== null && token !== undefined;
+    };
+    const handleMoreTabPress = async () => {
+        const isAuthenticated = await authCheck();
+        if (isAuthenticated) {
+            navigation.navigate('ReserveConfirm');
+        } else {
+            setIsModalVisible(true);
+        }
     };
 
     if (loading) {
@@ -298,17 +315,17 @@ style={{ width: "100%", height: 280, }} // Set your desired width and height
                                     <View className="space-y-2 ">
                                         <Text className="font-Poppins-SemiBold pt-4 mb-2" style={{ color: "#073064", fontSize: 16 }}>Seating Type</Text>
                                         <CustomSelectList
-                                             options={positions}
+                                            options={positions}
                                             // options={['Outdoor  seating', 'Booth seating', 'Restaurant chairs', 'Half circle booths']}
                                             selectedValue={selectedOption}
                                             onValueChange={(value) => setSelectedOption(value)}
                                             placeholder="Select"
                                         />
-                                    
+
                                     </View>
                                 </View>
 
-                                <TouchableOpacity className="mt-5" style={[styles.getStartedButton, { opacity: selectedSlot && timeslot.length > 0 ? 1 : 0.5 }]} disabled={timeslot.length === 0 && selectedSlot} >
+                                <TouchableOpacity className="mt-5" onPress={handleMoreTabPress} style={[styles.getStartedButton, { opacity: selectedSlot && timeslot.length > 0 ? 1 : 0.5 }]} disabled={timeslot.length === 0 && selectedSlot} >
                                     <Text className="font-Poppins-SemiBold text-center text-white"  >Reserve Now</Text>
                                 </TouchableOpacity>
 
@@ -334,6 +351,7 @@ style={{ width: "100%", height: 280, }} // Set your desired width and height
                     </View>
                 )}
             </ScrollView>
+            <CustomModal visible={isModalVisible} onClose={() => setIsModalVisible(false)} />
         </SafeAreaView>
 
 
@@ -383,11 +401,11 @@ style={{ width: "100%", height: 280, }} // Set your desired width and height
     },
     getStartedButton: {
         backgroundColor: '#073064',
-        height:50,
+        height: 50,
         borderRadius: 8,
-        display:"flex",
-        justifyContent:"center",
-        alignItems:"center"
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center"
     },
     buttonTexts: {
         color: 'white',
