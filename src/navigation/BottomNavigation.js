@@ -22,18 +22,19 @@ const tabItemMargin = width > 400 ? 12 : 8
 function MyTabBar({ state, descriptors, navigation }) {
   const { colors } = useTheme();
   const [isModalVisible, setIsModalVisible] = useState(false);
-  const authCheck = async () => {
-    const token = await AsyncStorage.getItem('token');
-    return token !== null && token !== undefined;
-  };
+  // const authCheck = async () => {
+  //   const token = await AsyncStorage.getItem('token');
+  //   return token !== null && token !== undefined;
+  // };
 
   const handleMoreTabPress = async () => {
-    const isAuthenticated = await authCheck();
-    if (isAuthenticated) {
-      navigation.navigate('More');
-    } else {
-      setIsModalVisible(true);
-    }
+    setIsModalVisible(true);
+    // const isAuthenticated = await authCheck();
+    // if (isAuthenticated) {
+    //   navigation.navigate('More');
+    // } else {
+      
+    // }
   };
 
   return (
@@ -64,11 +65,12 @@ function MyTabBar({ state, descriptors, navigation }) {
           });
 
           if (!isFocused && !event.defaultPrevented) {
-            if (route.name === 'More') {
-              handleMoreTabPress();
-            } else {
-              navigation.navigate(route.name, route.params);
-            }
+            navigation.navigate(route.name, route.params);
+            // if (route.name === 'More') {
+            //   handleMoreTabPress();
+            // } else {
+              
+            // }
           }
         };
 

@@ -9,9 +9,13 @@ import CalenderComponents from '../../components/CalenderComponents';
 import CustomSelectList from '../../components/CustomSelectList';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import CustomModal from '../../components/CustomModal';
+import MenuList from '../../components/MenuList';
+import Amenities from '../../components/Amenities';
+import Overview from '../../components/Overview';
 
 const ViewRestaurant = ({ navigation }) => {
     const [singleData, setSingleData] = useState([])
+    // console.log(singleData)
     const [timeslot, setTimeslot] = useState([])
     const [selectDate, setSelectDate] = useState('');
     const [selectedOption, setSelectedOption] = useState(null);
@@ -112,10 +116,13 @@ const ViewRestaurant = ({ navigation }) => {
     };
 
     const fetchSingleData = async () => {
+
         try {
+            const storedToken = await AsyncStorage.getItem('token');
             setLoading(true);
             const response = await instance.get(`/property/${id}`, {
                 headers: {
+                    'Authorization': `Bearer ${storedToken}`,
                     'Content-Type': 'application/json',
                 },
             });
@@ -141,6 +148,13 @@ const ViewRestaurant = ({ navigation }) => {
         const token = await AsyncStorage.getItem('token');
         return token !== null && token !== undefined;
     };
+    const overview = {
+        description: singleData?.description,
+        terms: singleData?.terms,
+        amenities: singleData?.branches?.[0]?.amenities || [],  
+        address: singleData?.branches?.[0]?.address || "Address not available",  
+      };
+      
     const handleMoreTabPress = async () => {
         const isAuthenticated = await authCheck();
         if (isAuthenticated) {
@@ -150,6 +164,8 @@ const ViewRestaurant = ({ navigation }) => {
         }
     };
 
+    
+
     if (loading) {
         return (
             <View className="h-full flex-row justify-center items-center">
@@ -158,7 +174,7 @@ const ViewRestaurant = ({ navigation }) => {
         );
     }
     return (
-        <SafeAreaView style={{ backgroundColor: "#E6EAF0", }}>
+        <SafeAreaView className="h-full" style={{ backgroundColor: "#E6EAF0", }}>
             <ScrollView overScrollMode="never">
                 <View className="relative">
 
@@ -203,7 +219,7 @@ style={{ width: "100%", height: 280, }} // Set your desired width and height
                                 <Text className="font-Poppins-SemiBold text-left" style={{ fontSize: 14 }} >
                                     {singleData?.listingName}
                                 </Text>
-                                <Text className=" font-Poppins-Light text-left" style={{ color: "#B5B5B5", fontSize: 12 }}>
+                                <Text className=" font-Poppins-Bold text-left" style={{ color: "#B5B5B5", fontSize: 12 }}>
                                     {singleData?.title}
                                 </Text>
                             </View>
@@ -237,7 +253,7 @@ style={{ width: "100%", height: 280, }} // Set your desired width and height
                     </View>
                 </View>
                 <ScrollView
-
+                 
                     contentContainerStyle={{ paddingHorizontal: 15, paddingTop: 10 }}
                     horizontal
                     showsHorizontalScrollIndicator={false}
@@ -264,6 +280,12 @@ style={{ width: "100%", height: 280, }} // Set your desired width and height
 
                         title="Overview"
                         isSelected={selectedCategory === 'Overview'}
+                    />
+                    <CategoryCard
+                        onPress={() => handleCategoryPress('Event')}
+
+                        title="Event"
+                        isSelected={selectedCategory === 'Event'}
                     />
                 </ScrollView>
 
@@ -337,14 +359,18 @@ style={{ width: "100%", height: 280, }} // Set your desired width and height
                         )}
                         {selectedCategory === 'Menu' && (
 
-                            <Text>Menu</Text>
+                            <MenuList menu={singleData?.food} />
                         )}
                         {selectedCategory === 'Amenities' && (
-                            <Text>Amenities</Text>
+                            <Amenities data={singleData?.branches[0]?.amenities} />
 
                         )}
                         {selectedCategory === 'Overview' && (
-                            <Text>Overview</Text>
+                           <Overview data={overview}/>
+
+                        )}
+                        {selectedCategory === 'Event' && (
+                           <Text>Event</Text>
 
                         )}
                         {/* Add more conditions for other categories as needed */}

@@ -7,7 +7,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import Feather from 'react-native-vector-icons/Feather';
 const DEFAULT_COUNTRY_CODE = '+880'; // Default country code
 import DateTimePicker from '@react-native-community/datetimepicker';
-const CustomModal = ({ navigation, visible, onClose }) => {
+const CustomModal = ({ navigation, visible, onClose,onReset  }) => {
     const [phoneNumber, setPhoneNumber] = useState("");
     const [ConfirmLoading, setConfirmLoading] = useState(false);
     const [show, setShow] = useState(false);
@@ -167,7 +167,22 @@ const CustomModal = ({ navigation, visible, onClose }) => {
 
                         // }
                     } else if (response.data?.user?.isVerify === true) {
-                        setCurrentStep(5);
+                        const saveData = async (key, value) => {
+                            try {
+                                await AsyncStorage.setItem(key, value);
+                                console.log('Token saved successfully');
+                            } catch (error) {
+                                console.error('Error saving data:', error);
+                            }
+                        };
+                        if (response?.data) {
+                            saveData('token', response?.data?.token);
+                            // console.log(response.data)
+                            // navigation.navigate('AccountCreated');
+                            setCurrentStep(5)
+                        }
+
+                        //  setCurrentStep(5);
                         // const NumberItem = response.data.user?.user?.phoneNumber;
                         // navigation.navigate('Account', { NumberItem });
                     }
@@ -300,13 +315,18 @@ const CustomModal = ({ navigation, visible, onClose }) => {
     };
 
     const handleContinue = () => openURLWithCheck('https://ryserved.com/privacy-policy/');
-
+    const handleClose = () => {
+        if (onReset) {
+            onReset(); // Call the reset function passed as a prop
+        }
+        onClose(); // Close the modal
+    };
     return (
         <Modal
             animationType="slide"
             transparent={false}
             visible={visible}
-            onRequestClose={onClose}
+            onRequestClose={handleClose}
         >
             <SafeAreaView className="bg-white h-full">
                 <ScrollView>
@@ -427,7 +447,7 @@ const CustomModal = ({ navigation, visible, onClose }) => {
                                     />
                                 </View>
                                 <View className="flex-row space-x-2 items-center   py-0 " style={styles.input} >
-                                <Feather name="user" color={"gray"} size={20} />
+                                    <Feather name="user" color={"gray"} size={20} />
                                     <TextInput
                                         placeholder="Last Name"
                                         className="flex-1 font-Poppins-Light"
@@ -535,16 +555,18 @@ const CustomModal = ({ navigation, visible, onClose }) => {
                             </TouchableOpacity>
                         </View>
                     </View>}
-                    {currentStep === 5 && <View className="p-4 mt-12 space-y-7 flex-col justify-center items-center" style={{ height: height * .80 }}>
-                        <View className="flex-col items-center space-y-9 " >
-                            {/* <Image source={require('../assets/login_image/logo.png')} style={{ width: 190, height: 27 }} />
+                    {currentStep === 5 &&
+
+                        <View className="p-4 mt-12 space-y-7 flex-col justify-center items-center" style={{ height: height * .80 }}>
+                            <View className="flex-col items-center space-y-9 " >
+                                {/* <Image source={require('../assets/login_image/logo.png')} style={{ width: 190, height: 27 }} />
                     <Image source={require('../assets/login_image/complate.png')} style={{ width: 70, height: 86 }} /> */}
-                            <View className="flex-col items-center space-y-3 ">
+                                <View className="flex-col items-center space-y-3 ">
 
-                                <Ionicons name="checkmark-circle" color={"#17C964"} size={90} />
-                                <Text className="text-3xl font-Poppins-SemiBold">Login Successful</Text>
+                                    <Ionicons name="checkmark-circle" color={"#17C964"} size={90} />
+                                    <Text className="text-3xl font-Poppins-SemiBold">Login Successful</Text>
 
-                                {/* <View className="flex-col items-center space-y-1 text-center justify-center ">
+                                    {/* <View className="flex-col items-center space-y-1 text-center justify-center ">
                             <Text className="text-sm text-center " style={{ color: "#B5B5B5",fontFamily:"Light" }}>
                                 Ryserved account has been successfully
                             </Text>
@@ -564,21 +586,21 @@ const CustomModal = ({ navigation, visible, onClose }) => {
                         </View> */}
 
 
+                                </View>
+
                             </View>
 
-                        </View>
-
-                        <View style={{
-                            flexDirection: 'row',
-                            justifyContent: 'space-between',
-                            alignItems: 'center',
-                            //  height: height * 0.70
-                        }} >
-                            <TouchableOpacity style={styles.Buttons} onPress={onClose}  >
-                                <Text className="font-Poppins-Bold" style={styles.buttonTexts} >Continue</Text>
-                            </TouchableOpacity>
-                        </View>
-                    </View>}
+                            <View style={{
+                                flexDirection: 'row',
+                                justifyContent: 'space-between',
+                                alignItems: 'center',
+                                //  height: height * 0.70
+                            }} >
+                                <TouchableOpacity style={styles.Buttons} onPress={onClose}  >
+                                    <Text className="font-Poppins-Bold" style={styles.buttonTexts} >Continue</Text>
+                                </TouchableOpacity>
+                            </View>
+                        </View>}
                 </ScrollView>
             </SafeAreaView>
         </Modal>
