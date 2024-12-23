@@ -45,10 +45,10 @@ const CalenderComponents = ({ ReserveDate }) => {
       <CalendarStrip
         scrollable
 
-        calendarAnimation={{ type: 'sequence', duration: 10 }}
+        calendarAnimation={{ type: 'sequence', duration: 30 }}
         daySelectionAnimation={{
           type: 'background',
-          duration: 150,
+          duration: 300,
           highlightColor: '#073064',
 
         }}

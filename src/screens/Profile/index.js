@@ -22,7 +22,7 @@ const ProfileScreen = () => {
     const [modalVisible, setModalVisible] = useState(false);
     const [isModalVisible, setIsModalVisible] = useState(false);
     const { width } = Dimensions.get('window');
-    const containerWidth = width > 360 ? 332 : width * 0.9;
+    // const containerWidth = width > 360 ? 332 : width * 0.9;
     const isFocused = useIsFocused();
     const [formData, setFormData] = useState({
         firstName: '',
@@ -189,7 +189,7 @@ const ProfileScreen = () => {
                             style={{
                                 backgroundColor: '#ffff',
                                 borderRadius: 12,
-                                width: containerWidth,
+                                // width: containerWidth,
 
                             }}
                         >
@@ -408,7 +408,7 @@ const ProfileScreen = () => {
                 }}>
                     <View
                         className="p-4 bg-white rounded-md"
-                        style={{ width: containerWidth }}
+                        // style={{ width: containerWidth }}
                     >
                         <Text
                             className="font-Poppins-SemiBold text-center"
