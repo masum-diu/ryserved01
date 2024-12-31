@@ -4,7 +4,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import Feather from 'react-native-vector-icons/Feather';
 import { useNavigation } from '@react-navigation/native';
 
-const PopularRestaurantsCard = ({
+const EventSliderCard = ({
     imgUrl,
     title,
     rating,
@@ -17,9 +17,9 @@ const PopularRestaurantsCard = ({
     id,
     distance,
 }) => {
-    const navigation = useNavigation(); 
+    const navigation = useNavigation();
     return (
-        <TouchableOpacity className="mr-3 shadow" style={{ width: 242 }} onPress={() => navigation.navigate("ViewRestaurant", {id})}>
+        <TouchableOpacity className="mr-3 shadow" style={{ width: 242 }} onPress={() => navigation.navigate("ViewEvent", {id})}>
             <Image className="rounded-t-2xl" source={{ uri: imgUrl }} style={{ height: 90 }} />
             <View className="px-3 pb-4 bg-white rounded-b-xl">
                 <Text className="font-Poppins-SemiBold pt-2" style={{ fontSize: 10 }}>
@@ -49,4 +49,4 @@ const PopularRestaurantsCard = ({
     );
 };
 
-export default PopularRestaurantsCard;
+export default EventSliderCard;

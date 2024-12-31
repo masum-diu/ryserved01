@@ -8,6 +8,10 @@ import CategoryPageScreen from './src/screens/CategoryPage';
 import ViewRestaurant from './src/screens/viewRestaurants';
 import { AuthProvider } from './src/util/AuthContext';
 import ReserveConfirm from './src/screens/ReserveConfirm';
+import ModifyReservation from './src/screens/ModifyReservation';
+import CancelReservation from './src/screens/CancelReservation';
+import ReservationEdit from './src/screens/ReservationEdit';
+import ViewEvent from './src/screens/ViewEvent';
 
 
 const Stack = createNativeStackNavigator();
@@ -19,6 +23,10 @@ function RootStack() {
       <Stack.Screen name="CategoryPage" component={CategoryPageScreen} />
       <Stack.Screen name="ViewRestaurant" component={ViewRestaurant} />
       <Stack.Screen name="ReserveConfirm" component={ReserveConfirm} />
+      <Stack.Screen name="ModifyReservation" component={ModifyReservation} />
+      <Stack.Screen name="CancelReservation" component={CancelReservation} />
+      <Stack.Screen name="ReservationEdit" component={ReservationEdit} />
+      <Stack.Screen name="ViewEvent" component={ViewEvent} />
     </Stack.Navigator>
   );
 }

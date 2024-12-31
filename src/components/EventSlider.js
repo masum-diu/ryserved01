@@ -1,15 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, ScrollView, ActivityIndicator } from 'react-native';
-import PopularRestaurantsCard from './PopularRestaurantsCard';
 import instance from '../api/api_instance';
+import EventSliderCard from './EventSliderCard';
 
-const Slider = ({ title, subtitle, content, signature }) => {
+const EventSlider = ({ title, subtitle, content, signature }) => {
     const [loading, setLoading] = useState(false);
     const [sliderData, setSliderData] = useState([]);
+    //  console.log(sliderData)
     const fetchSliderData = async () => {
         try {
             setLoading(true);
-            const response = await instance.get(`/property?signature=${signature}`, {
+            const response = await instance.get(`/event?signature=${signature}`, {
                 headers: {
                     'Content-Type': 'application/json',
                 },
@@ -43,15 +44,16 @@ const Slider = ({ title, subtitle, content, signature }) => {
                 >
                     {sliderData.length > 0 ? (
                         sliderData?.map((item, index) => (
-                            <PopularRestaurantsCard
+                            <EventSliderCard
                                 key={index}
-                                imgUrl={item?.images?.[0]?.link}
-                                title={item?.listingName}
+                                imgUrl={item?.images?.[0]}
+                                title={item?.evtName}
                                 id={item?.id}
+                                address={item?.location}
                             />
                         ))
                     ) : (
-                        <Text style={{ padding: 10, color: "#B5B5B5" }}>No data available</Text>
+                        <Text className="font-Poppins-Light" style={{ padding: 10, color: "#B5B5B5" }}>No data available</Text>
                     )}
                 </ScrollView>
             )}
@@ -59,4 +61,4 @@ const Slider = ({ title, subtitle, content, signature }) => {
     );
 };
 
-export default Slider;
+export default EventSlider;

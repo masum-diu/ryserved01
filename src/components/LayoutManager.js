@@ -10,6 +10,7 @@ import CategoryCard from './CategoryCard';
 import AllRestaurantsListCard from './AllRestaurantsListCard';
 import { useNavigation } from '@react-navigation/native';
 import instance from '../api/api_instance';
+import EventSlider from './EventSlider';
 
 const LayoutManager = ({ data, isLoading }) => {
     const navigation = useNavigation();
@@ -55,13 +56,15 @@ const LayoutManager = ({ data, isLoading }) => {
                 return <Promotionallogo key={item.id} content={item.content} title={item.title} subtitle={item.subtitle} signature={item.signature} />;
             case 'food-promotion':
                 return <Foodpromotion key={item.id} content={item.content} title={item.title} subtitle={item.subtitle} signature={item.signature} />;
+            case 'event-slider':
+                return <EventSlider key={item.id} title={item.title} subtitle={item.subtitle} content={item.content} signature={item.signature} />;
             default:
                 return null;
         }
     };
 
     return (
-        <ScrollView  >
+        <ScrollView  className="mb-20">
             <View>
                 <View style={{ backgroundColor: '#073064' }}>
                     <TouchableOpacity>

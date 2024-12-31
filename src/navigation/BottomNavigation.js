@@ -11,7 +11,6 @@ import ReserveScreen from '../screens/calendar';
 import SaveScreen from '../screens/save';
 import ProfileScreen from '../screens/Profile';
 import CustomModal from '../components/CustomModal';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 const PRIMARY_COLOR = "#130057";
 const SECONDARY_COLOR = "#fff";
 const { width } = Dimensions.get('window');

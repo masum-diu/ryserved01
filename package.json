@@ -1,5 +1,5 @@
 {
-  "name": "ryserved01",
+  "name": "ryserved",
   "version": "0.0.1",
   "private": true,
   "scripts": {
@@ -30,7 +30,8 @@
     "react-native-reanimated": "^3.16.5",
     "react-native-safe-area-context": "^4.14.0",
     "react-native-screens": "^4.0.0",
-    "react-native-svg": "^15.8.0",
+    "react-native-svg": "^15.10.1",
+    "react-native-svg-transformer": "^1.5.0",
     "react-native-swiper": "^1.6.0",
     "react-native-ui-datepicker": "^2.0.4",
     "react-native-vector-icons": "^10.2.0"

@@ -11,9 +11,11 @@ import instance from '../../api/api_instance';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import CustomModal from '../../components/CustomModal';
 import { useIsFocused } from '@react-navigation/native';
-
+import Users from '../../../assets/image/user-octagon.svg'
+import Tanslate from '../../../assets/image/translate.svg'
 const ProfileScreen = () => {
     const [user, setUser] = useState(null);
+    
     const [id, setID] = useState('');
     const [toggler, setToggler] = useState(true)
     const [togglerUser, setTogglerUser] = useState(true)
@@ -22,6 +24,7 @@ const ProfileScreen = () => {
     const [modalVisible, setModalVisible] = useState(false);
     const [isModalVisible, setIsModalVisible] = useState(false);
     const { width } = Dimensions.get('window');
+
     // const containerWidth = width > 360 ? 332 : width * 0.9;
     const isFocused = useIsFocused();
     const [formData, setFormData] = useState({
@@ -135,8 +138,10 @@ const ProfileScreen = () => {
         {
             title: 'My Account',
             items: [
-                { name: 'Personal information', icon: <Feather name="user" color="#DC4A45" size={24} />, action: () => setToggler((prev) => !prev), },
-                { name: 'Language', icon: <Ionicons name="language-outline" color="#DC4A45" size={24} />, extra: 'English (US)' },
+                {
+                    name: 'Personal information', icon: <Users width={24} height={24} stroke="blue"/>, action: () => setToggler((prev) => !prev),
+                },
+                { name: 'Language', icon: <Tanslate width={24} height={24} />, extra: 'English (US)' },
                 { name: 'Privacy Policy', icon: <Feather name="lock" color="#DC4A45" size={24} /> },
                 { name: 'Settings', icon: <Feather name="settings" color="#DC4A45" size={24} /> },
             ],
@@ -408,7 +413,7 @@ const ProfileScreen = () => {
                 }}>
                     <View
                         className="p-4 bg-white rounded-md"
-                        // style={{ width: containerWidth }}
+                    // style={{ width: containerWidth }}
                     >
                         <Text
                             className="font-Poppins-SemiBold text-center"

@@ -1,10 +1,11 @@
-import { View, Text } from 'react-native'
+import { View, Text, Button } from 'react-native'
 import React from 'react'
 
 const SearchScreen = () => {
     return (
         <View>
             <Text>SearchScreen</Text>
+            
         </View>
     )
 }

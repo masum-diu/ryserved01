@@ -7,11 +7,10 @@ import instance from '../../api/api_instance';
 const HomeScreen = () => {
   const [loading, setLoading] = useState(false);
   const [homeData, setHomeData] = useState([]);
-
   const fetchData = async () => {
     try {
       setLoading(true);
-      const response = await instance.get('/home-page?group=RESTAURANT&pageNo=1&perPage=10', {
+      const response = await instance.get('/home-page?pageNo=1&perPage=10', {
         headers: {
           'Content-Type': 'application/json',
         },

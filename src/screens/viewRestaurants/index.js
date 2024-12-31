@@ -1,4 +1,4 @@
-import { View, Text, Image, ScrollView, Dimensions, TouchableOpacity, StyleSheet, ActivityIndicator } from 'react-native'
+import { View, Text, Image, ScrollView, Dimensions, TouchableOpacity, StyleSheet, ActivityIndicator, TextInput } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -15,13 +15,17 @@ import Overview from '../../components/Overview';
 
 const ViewRestaurant = ({ navigation }) => {
     const [singleData, setSingleData] = useState([])
-    // console.log(singleData)
+    const [singleDataEvent, setSingleDataEvent] = useState([])
+    const [bookingType, setBookingType] = useState('Regular');
+    console.log(singleDataEvent)
     const [timeslot, setTimeslot] = useState([])
     const [selectDate, setSelectDate] = useState('');
     const [selectedOption, setSelectedOption] = useState(null);
+    // console.log(selectedOption)
     const [loading, setLoading] = useState(false)
     const route = useRoute();
-    const { id } = route.params;
+    const { id, resID } = route.params;
+    // console.log(id)
     const [selectedCategory, setSelectedCategory] = useState('Reservation');
     const [count, setCount] = useState(1);
     const [todaySlot, setTodaySlot] = useState(null)
@@ -30,8 +34,24 @@ const ViewRestaurant = ({ navigation }) => {
     const { width, height } = Dimensions.get('window');
     const [isModalVisible, setIsModalVisible] = useState(false);
     const dateString = selectDate;
-    const positions = singleData?.branches?.[0]?.tables?.map(table => table?.position) || [];
+    const positions = singleData?.branches?.[0]?.tables?.map(table => ({
+        id: table?.id,
+        position: table?.position,
+    })) || [];
+    const [formData, setFormData] = useState({
+        fullName: '',
+        email: '',
+        Number: '',
 
+    });
+
+    const handleChange = (field, value) => {
+        setFormData((prevState) => ({
+            ...prevState,
+            [field]: value,
+        }));
+    }
+    // console.log(positions)
     // useEffect(() => {
 
     //     if (singleData && Array.isArray(singleData.slot)) {
@@ -90,13 +110,13 @@ const ViewRestaurant = ({ navigation }) => {
     //     setTodaySlot(slot === selectedSlot ? null : slot);
     // };
     const handleTimeSlotPress = (slot, eventName) => {
-        // setBookingType(eventName);
+        setBookingType(eventName);
         if (selectedCategory === 'Reservation') {
             setSelectedSlot(slot === selectedSlot ? null : slot);
             setTodaySlot(slot === selectedSlot ? null : slot);
         }
-        // else if (selectedCategory === 'Amenities' && getdata?.event?.slot) {
-        // setTodaySlot(getdata.event.slot === slot ? null : getdata.event.slot);
+        //  else if (selectedCategory === 'Amenities' && getdata?.event?.slot) {
+        //  setTodaySlot(getdata.event.slot === slot ? null : getdata.event.slot);
 
 
         // }
@@ -120,7 +140,7 @@ const ViewRestaurant = ({ navigation }) => {
         try {
             const storedToken = await AsyncStorage.getItem('token');
             setLoading(true);
-            const response = await instance.get(`/property/${id}`, {
+            const response = await instance.get(`/property/${id || resID}`, {
                 headers: {
                     'Authorization': `Bearer ${storedToken}`,
                     'Content-Type': 'application/json',
@@ -138,6 +158,7 @@ const ViewRestaurant = ({ navigation }) => {
 
     useEffect(() => {
         fetchSingleData();
+        fetchSingleDataevent()
     }, []);
     const handleCategoryPress = (category) => {
         // Toggle the selected category
@@ -151,20 +172,111 @@ const ViewRestaurant = ({ navigation }) => {
     const overview = {
         description: singleData?.description,
         terms: singleData?.terms,
-        amenities: singleData?.branches?.[0]?.amenities || [],  
-        address: singleData?.branches?.[0]?.address || "Address not available",  
-      };
-      
+        amenities: singleData?.branches?.[0]?.amenities || [],
+        address: singleData?.branches?.[0]?.address || "Address not available",
+    };
+    const restaurantname = { restaurantname: singleData?.listingName }
+    const bookingInfo = {
+
+        // subAssetCompId: getdata?.id,
+        tableId: selectedOption,
+        branchId: singleData?.branches?.[0]?.id,
+        startDate: formatDate(selectDate),
+        endDate: formatDate(selectDate),
+        guestNumber: count,
+        slot: todaySlot,
+        // seatBedId: "",
+        amount: 0,
+        vat: 0,
+        discount: 0,
+        grandTotal: 0,
+        customerRequest: "test",
+        status: "ON_HOLD",
+        bookingType: bookingType,
+        trams: singleData?.terms
+    }
+    // console.log(bookingInfo, "booking")
     const handleMoreTabPress = async () => {
         const isAuthenticated = await authCheck();
-        if (isAuthenticated) {
-            navigation.navigate('ReserveConfirm');
-        } else {
+        if (!isAuthenticated) {
             setIsModalVisible(true);
+            // navigation.navigate('ReserveConfirm');
+        } else if (bookingInfo) {
+            navigation.navigate('ReserveConfirm', { bookingInfo, restaurantname });
         }
     };
 
-    
+    // event area
+    const eventid = singleData?.event?.[0]?.id;
+    if (eventid !== undefined) {
+    }
+    const fetchSingleDataevent = async () => {
+
+        try {
+            const storedToken = await AsyncStorage.getItem('token');
+            setLoading(true);
+            const response = await instance.get(`/event/${eventid}`, {
+                headers: {
+                    'Authorization': `Bearer ${storedToken}`,
+                    'Content-Type': 'application/json',
+                },
+            });
+            if (response?.data) {
+                setSingleDataEvent(response?.data);
+            }
+        } catch (error) {
+            console.error('Error fetching data:', error);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+
+    const handleReservePress = async () => {
+        try {
+            const storedToken = await AsyncStorage.getItem('token');
+
+            if (storedToken) {
+                const response = await instance.post('/event/booking', {
+                    eventId: singleDataEvent?.id,
+                    username: formData.fullName,
+                    phoneNumber: formData.Number,
+                    email: formData.email,
+                    amount: 0,
+                    vat: 0,
+                    discount: 0,
+                    price: 0,
+                    person: count,
+                    payStatus: "UNPAID",
+                    eventDate: singleDataEvent?.startDate,
+                    menuData: [{ data: "no content" }],
+                    bookingStatus: "ON_HOLD",
+                    issueAt: singleDataEvent?.startDate,
+                    status: "true",
+
+                }, {
+                    headers: {
+                        'Authorization': `Bearer ${storedToken}`,
+                        'Content-Type': 'application/json',
+                    },
+                });
+                if (response?.data) {
+                    // console.log(response?.data)
+                    navigation.navigate('Home', { screen: 'Reservation' });
+                    // if (segmentClient && segmentClient.track) {
+                    //     segmentClient.track('Reservation status', { param1: 'value2' });
+                    // } else {
+                    //     console.error('Segment client or track method is not available');
+                    // }
+
+
+                }
+            }
+            // Handle response as needed
+        } catch (error) {
+            console.error('There was a problem with the request:', error);
+        }
+    };
 
     if (loading) {
         return (
@@ -219,7 +331,7 @@ style={{ width: "100%", height: 280, }} // Set your desired width and height
                                 <Text className="font-Poppins-SemiBold text-left" style={{ fontSize: 14 }} >
                                     {singleData?.listingName}
                                 </Text>
-                                <Text className=" font-Poppins-Bold text-left" style={{ color: "#B5B5B5", fontSize: 12 }}>
+                                <Text className="font-Poppins-Bold text-left" style={{ color: "#B5B5B5", fontSize: 12 }}>
                                     {singleData?.title}
                                 </Text>
                             </View>
@@ -252,8 +364,9 @@ style={{ width: "100%", height: 280, }} // Set your desired width and height
 
                     </View>
                 </View>
+
                 <ScrollView
-                 
+
                     contentContainerStyle={{ paddingHorizontal: 15, paddingTop: 10 }}
                     horizontal
                     showsHorizontalScrollIndicator={false}
@@ -281,12 +394,14 @@ style={{ width: "100%", height: 280, }} // Set your desired width and height
                         title="Overview"
                         isSelected={selectedCategory === 'Overview'}
                     />
-                    <CategoryCard
-                        onPress={() => handleCategoryPress('Event')}
+                    {singleData?.eventStatus === true ?
+                        <CategoryCard
+                            onPress={() => handleCategoryPress('Event')}
 
-                        title="Event"
-                        isSelected={selectedCategory === 'Event'}
-                    />
+                            title="Event"
+                            isSelected={selectedCategory === 'Event'}
+                        /> : <Text></Text>}
+
                 </ScrollView>
 
                 {selectedCategory && (
@@ -327,7 +442,7 @@ style={{ width: "100%", height: 280, }} // Set your desired width and height
                                                 <Text className=" rounded-md text-center font-Poppins-Bold" style={{ width: 30, backgroundColor: "#FDE5E4", color: "#DC4A45" }}>-</Text>
                                                 {/* <Image source={require('../assets/minas.png')} style={{ width: 30, height: 30 }} /> */}
                                             </TouchableOpacity>
-                                            <Text className="font-medium text-md" style={{ fontFamily: "Medium" }}>{count}</Text>
+                                            <Text className="font-Poppins-Medium text-md" >{count}</Text>
                                             <TouchableOpacity onPress={incrementCount}>
                                                 <Text className=" rounded-md text-center font-Poppins-Bold" style={{ width: 30, backgroundColor: "#DAE0E8", color: "#073064" }}>+</Text>
                                                 {/* <Image source={require('../assets/plus.png')} style={{ width: 30, height: 30 }} /> */}
@@ -338,9 +453,8 @@ style={{ width: "100%", height: 280, }} // Set your desired width and height
                                         <Text className="font-Poppins-SemiBold pt-4 mb-2" style={{ color: "#073064", fontSize: 16 }}>Seating Type</Text>
                                         <CustomSelectList
                                             options={positions}
-                                            // options={['Outdoor  seating', 'Booth seating', 'Restaurant chairs', 'Half circle booths']}
                                             selectedValue={selectedOption}
-                                            onValueChange={(value) => setSelectedOption(value)}
+                                            onValueChange={setSelectedOption}
                                             placeholder="Select"
                                         />
 
@@ -366,11 +480,68 @@ style={{ width: "100%", height: 280, }} // Set your desired width and height
 
                         )}
                         {selectedCategory === 'Overview' && (
-                           <Overview data={overview}/>
+                            <Overview data={overview} />
 
                         )}
                         {selectedCategory === 'Event' && (
-                           <Text>Event</Text>
+                            <View className="space-y-3">
+                                <Text className="font-Poppins-SemiBold" style={{ fontSize: 14 }}>Full Name</Text>
+                                <View className="flex-row space-x-2 items-center px-2" style={styles.input}>
+                                    <Ionicons name="person-outline" size={20} color="#041D3C" />
+                                    <TextInput
+                                        placeholder="Type your name"
+                                        value={formData.fullName}
+                                        onChangeText={(text) => handleChange('fullName', text)}
+                                        className="flex-1 font-Poppins-Light"
+
+                                    />
+                                </View>
+                                <Text className="font-Poppins-SemiBold" style={{ fontSize: 14 }}>Email</Text>
+                                <View className="flex-row space-x-2 items-center px-2" style={styles.input}>
+                                    <Ionicons name="mail-outline" size={20} color="#041D3C" />
+                                    <TextInput
+                                        placeholder="Type your email"
+                                        value={formData.email}
+                                        onChangeText={(text) => handleChange('email', text)}
+                                        className="flex-1 font-Poppins-Light"
+
+                                    />
+                                </View>
+                                <Text className="font-Poppins-SemiBold" style={{ fontSize: 14 }}>Phone Number</Text>
+                                <View className="flex-row space-x-2 items-center px-2" style={styles.input}>
+                                    <Ionicons name="call-outline" size={20} color="#041D3C" />
+                                    <TextInput
+                                        placeholder="Type your phone number"
+                                        value={formData.Number}
+                                        onChangeText={(text) => handleChange('Number', text)}
+                                        className="flex-1 font-Poppins-Light "
+
+                                    />
+                                </View>
+                                <View className="space-y-2 mb-3 ">
+                                    <Text className="font-Poppins-SemiBold" style={{ fontSize: 14 }}>Guest</Text>
+                                    <View className="bg-white flex-row  items-center justify-between p-1 rounded-lg" style={{ width: 130, borderColor: "#073064", borderWidth: 1, borderRadius: 8 }}>
+                                        <TouchableOpacity onPress={decrementCount}>
+                                            <Text className=" rounded-md text-center font-Poppins-Bold" style={{ width: 30, borderColor: "#073064", borderWidth: 2, color: "#073064", borderRadius: 8 }}>-</Text>
+                                            {/* <Image source={require('../assets/minas.png')} style={{ width: 30, height: 30 }} /> */}
+                                        </TouchableOpacity>
+                                        <Text className="font-Poppins-SemiBold text-md" >{count}</Text>
+                                        <TouchableOpacity onPress={incrementCount}>
+                                            <Text className=" rounded-md text-center font-Poppins-Bold" style={{ width: 30, borderColor: "#073064", borderWidth: 2, color: "#073064", borderRadius: 8 }}>+</Text>
+                                            {/* <Image source={require('../assets/plus.png')} style={{ width: 30, height: 30 }} /> */}
+                                        </TouchableOpacity>
+                                    </View>
+                                </View>
+                                <TouchableOpacity
+                                    onPress={handleReservePress}
+                                    className="bg-[#073064] w-full rounded-lg flex-row justify-center items-center"
+                                    style={{ height: 50 }}
+                                >
+                                    <Text className="text-white text-center font-Poppins-SemiBold">
+                                        Confirm
+                                    </Text>
+                                </TouchableOpacity>
+                            </View>
 
                         )}
                         {/* Add more conditions for other categories as needed */}

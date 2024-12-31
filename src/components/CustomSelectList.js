@@ -5,9 +5,9 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 const CustomSelectList = ({ options, selectedValue, onValueChange, placeholder }) => {
 
     const [modalVisible, setModalVisible] = useState(false);
-
+    const selectedOption = options.find(option => option.id === selectedValue)?.position;
     const handleSelect = (value) => {
-        onValueChange(value);
+        onValueChange(value.id); 
         setModalVisible(false);
     };
 
@@ -20,7 +20,7 @@ const CustomSelectList = ({ options, selectedValue, onValueChange, placeholder }
                 onPress={() => setModalVisible(true)}
             >
                 <Text className="font-Poppins-Medium px-1 " style={{fontSize:12}}>
-                    {selectedValue || placeholder || 'Select'}
+                    {selectedOption || placeholder || 'Select'}
                 </Text>
                 <View className="rounded-md text-center flex-row justify-center items-center p-1 " style={{ width: 30, backgroundColor: "#DAE0E8", color: "#073064" }}>
                     <Ionicons name="chevron-down-outline"   size={14} />

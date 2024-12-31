@@ -29,7 +29,7 @@ const Foodpromotion = ({ content, title, subtitle, signature }) => {
         fetchSliderDataFoodpromotion();
     }, []);
     return (
-        <View style={styles.container} className="pt-5 mb-20">
+        <View style={styles.container} className="pt-5 ">
             <Text className="font-Poppins-Bold px-4" style={{ fontSize: 12, color: "#FFF" }}>{title}</Text>
             <Text className="font-Poppins-Medium px-4 pb-3" style={{ fontSize: 10, color: "#B5B5B5" }}>{subtitle}</Text>
             <ScrollView
