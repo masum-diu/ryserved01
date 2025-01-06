@@ -1,6 +1,7 @@
-import { View, Text, Image, ScrollView, Dimensions, TouchableOpacity, StyleSheet, ActivityIndicator, TextInput } from 'react-native'
+import { View, Text, Image, ScrollView, Dimensions, TouchableOpacity, StyleSheet, ActivityIndicator, TextInput, Alert } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import Feather from 'react-native-vector-icons/Feather';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import CategoryCard from '../../components/CategoryCard';
 import { useRoute } from '@react-navigation/native';
@@ -15,9 +16,9 @@ import Overview from '../../components/Overview';
 
 const ViewRestaurant = ({ navigation }) => {
     const [singleData, setSingleData] = useState([])
+    const [switchtigger, setSwithTigger] = useState(false)
     const [singleDataEvent, setSingleDataEvent] = useState([])
     const [bookingType, setBookingType] = useState('Regular');
-    console.log(singleDataEvent)
     const [timeslot, setTimeslot] = useState([])
     const [selectDate, setSelectDate] = useState('');
     const [selectedOption, setSelectedOption] = useState(null);
@@ -134,7 +135,7 @@ const ViewRestaurant = ({ navigation }) => {
         // Ensure count doesn't go below 1
         setCount((prevCount) => (prevCount > 1 ? prevCount - 1 : 1));
     };
-
+ console.log(id)
     const fetchSingleData = async () => {
 
         try {
@@ -163,6 +164,8 @@ const ViewRestaurant = ({ navigation }) => {
     const handleCategoryPress = (category) => {
         // Toggle the selected category
         setSelectedCategory(selectedCategory === category ? category : category);
+        fetchSingleDataevent()
+        setSwithTigger(null)
     };
 
     const authCheck = async () => {
@@ -211,7 +214,7 @@ const ViewRestaurant = ({ navigation }) => {
     if (eventid !== undefined) {
     }
     const fetchSingleDataevent = async () => {
-
+        if (!eventid) return;
         try {
             const storedToken = await AsyncStorage.getItem('token');
             setLoading(true);
@@ -230,13 +233,49 @@ const ViewRestaurant = ({ navigation }) => {
             setLoading(false);
         }
     };
+    const handleWishListPress = async () => {
+        try {
+            setLoading(true)
+            const storedToken = await AsyncStorage.getItem('token');
+            if (storedToken) {
+                const response = await instance.post(`/wishlist`, {
+                    type: singleData?.type,
+                    propertyId: singleData?.branches[0]?.propertyId,
+                    status: "true",
+                }, {
+                    headers: {
+                        'Authorization': `Bearer ${storedToken}`,
+                        'Content-Type': 'application/json',
+                    },
+                });
+
+            }
+            // Handle response as needed
+            setLoading(false)
+            Alert.alert(
+                'Success',
+                'Your item has been added to the wishlist!',
+                [{ text: 'OK' }],
+                { cancelable: false }
+            );
+        } catch (error) {
+            console.error('There was a problem with the request:', error);
+            setLoading(false);
+            Alert.alert(
+                'Error',
+                'There was an issue with your request. Please try again.',
+                [{ text: 'OK' }],
+                { cancelable: false }
+            );
+        }
+    };
 
 
     const handleReservePress = async () => {
         try {
             const storedToken = await AsyncStorage.getItem('token');
-
-            if (storedToken) {
+            if (!storedToken) { setIsModalVisible(true); }
+            else if (storedToken) {
                 const response = await instance.post('/event/booking', {
                     eventId: singleDataEvent?.id,
                     username: formData.fullName,
@@ -310,7 +349,7 @@ style={{ width: "100%", height: 280, }} // Set your desired width and height
                         <Ionicons name="chevron-back-outline" size={20} />
                     </TouchableOpacity>
 
-                    <TouchableOpacity className="bg-white absolute mr-3 mt-4 right-0 h-8 w-8 flex-row items-center justify-center rounded-md" style={{ borderColor: '#DBDBDB', borderWidth: 1 }}  >
+                    <TouchableOpacity className="bg-white absolute mr-3 mt-4 right-0 h-8 w-8 flex-row items-center justify-center rounded-md" style={{ borderColor: '#DBDBDB', borderWidth: 1 }} onPress={handleWishListPress}  >
                         <Ionicons name="bookmark-outline" size={20} />
                     </TouchableOpacity>
 
@@ -484,7 +523,8 @@ style={{ width: "100%", height: 280, }} // Set your desired width and height
 
                         )}
                         {selectedCategory === 'Event' && (
-                            <View className="space-y-3">
+
+                            switchtigger === true ? <View className="space-y-3">
                                 <Text className="font-Poppins-SemiBold" style={{ fontSize: 14 }}>Full Name</Text>
                                 <View className="flex-row space-x-2 items-center px-2" style={styles.input}>
                                     <Ionicons name="person-outline" size={20} color="#041D3C" />
@@ -541,7 +581,23 @@ style={{ width: "100%", height: 280, }} // Set your desired width and height
                                         Confirm
                                     </Text>
                                 </TouchableOpacity>
+                            </View> : <View >
+                                <View className="flex-row items-center space-x-1" >
+                                    <Feather name="map-pin" size={14} color="#DC4A45" />
+                                    <Text className="font-Poppins-Bold" style={{ color: "#DC4A45", fontSize: 12 }}>{singleDataEvent?.address}</Text></View>
+                                <Text className="font-Poppins-SemiBold pt-4" style={{ color: "#073064", fontSize: 16 }}>Events Details</Text>
+                                <Text className="font-Poppins-Light py-4" style={{ color: "#979797", fontSize: 14 }}>{singleDataEvent?.description}</Text>
+                                <TouchableOpacity
+                                    onPress={() => setSwithTigger(true)}
+                                    className="bg-[#073064] w-full rounded-lg flex-row justify-center items-center"
+                                    style={{ height: 50 }}
+                                >
+                                    <Text className="text-white text-center font-Poppins-SemiBold">
+                                        Join Now
+                                    </Text>
+                                </TouchableOpacity>
                             </View>
+
 
                         )}
                         {/* Add more conditions for other categories as needed */}

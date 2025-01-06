@@ -5,10 +5,12 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import instance from '../../api/api_instance';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import CustomModal from '../../components/CustomModal';
 const ViewEvent = ({ navigation }) => {
     const [singleData, setSingleData] = useState([])
     // console.log(singleData)
     const [count, setCount] = useState(1);
+    const [isModalVisible, setIsModalVisible] = useState(false);
     const [loading, setLoading] = useState(false)
     const route = useRoute();
     const { width, height } = Dimensions.get('window');
@@ -84,8 +86,10 @@ const ViewEvent = ({ navigation }) => {
     const handleReservePress = async () => {
         try {
             const storedToken = await AsyncStorage.getItem('token');
-
-            if (storedToken) {
+            if (!storedToken) {
+                setIsModalVisible(true);
+            }
+            else if (storedToken) {
                 const response = await instance.post('/event/booking', {
                     eventId: id,
                     username: formData.fullName,
@@ -277,6 +281,7 @@ style={{ width: "100%", height: 280, }} // Set your desired width and height
 
 
             </ScrollView>
+            <CustomModal visible={isModalVisible} onClose={() => setIsModalVisible(false)} />
         </SafeAreaView>
     )
 }; const styles = StyleSheet.create({

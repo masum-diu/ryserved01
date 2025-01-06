@@ -116,7 +116,7 @@ const ModifyReservation = ({ navigation }) => {
     const handlePress = () => {
         status === "ON_HOLD" ?  
             navigation.navigate('ReservationEdit', {
-                id, resID, distance
+                id, resID, distance,
             }) : "";
     };
     const handleCancelReservation = () => {

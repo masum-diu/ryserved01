@@ -48,6 +48,9 @@ const Slider = ({ title, subtitle, content, signature }) => {
                                 imgUrl={item?.images?.[0]?.link}
                                 title={item?.listingName}
                                 id={item?.id}
+                                address={item?.branches?.[0]?.area}
+                              
+                               
                             />
                         ))
                     ) : (

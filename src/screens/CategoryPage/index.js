@@ -3,11 +3,34 @@ import React, { useState, useEffect } from 'react';
 import { useRoute } from '@react-navigation/native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import AllRestaurantsListCard from '../../components/AllRestaurantsListCard';
+import instance from '../../api/api_instance';
 
 const CategoryPageScreen = ({ navigation }) => {
     const route = useRoute();
     const { category } = route.params;
     const [loading, setLoading] = useState(true);
+    const [sliderData, setSliderData] = useState([]);
+    const fetchDatacuisine = async () => {
+        try {
+            setLoading(true);
+            const response = await instance.get(`/RESTAURANT/search?cuisine=${category}&pageNo=1&perPage=8`, {
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            });
+            if (response?.data) {
+                setSliderData(response?.data?.data);
+            }
+            setLoading(false);
+        } catch (error) {
+            console.error(error);
+            setLoading(false);
+        }
+    };
+
+    useEffect(() => {
+        fetchDatacuisine();
+    }, []);
     useEffect(() => {
         setTimeout(() => {
             setLoading(false);
@@ -17,8 +40,8 @@ const CategoryPageScreen = ({ navigation }) => {
     return (
         <ScrollView style={{ backgroundColor: "#E6EAF0" }} bounces={false}
             overScrollMode="never">
-            <View className="m-4 space-y-4">
-                <View className="flex-row justify-between items-center">
+            <View className="p-4 space-y-4">
+                <View className="flex-row justify-between items-center mb-5">
                     <TouchableOpacity
                         className="bg-white h-8 w-8 flex-row items-center justify-center rounded-md"
                         style={{ borderColor: '#DBDBDB', borderWidth: 1 }}
@@ -33,19 +56,28 @@ const CategoryPageScreen = ({ navigation }) => {
                 </View>
 
                 {loading ? (
-                    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', paddingTop: 20 }}>
+                    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', }}>
                         <ActivityIndicator size="large" color="#073064" />
                         <Text className="font-Poppins-Light">Loading...</Text>
                     </View>
                 ) : (
-                    <View>
-                        <AllRestaurantsListCard imgUrl="https://eltorobd.com/images/img-01.jpg" title={category} address={"Gulshan 2"} rating={4.7} distance={"1.2 km"} />
-                        <AllRestaurantsListCard imgUrl="https://media.gettyimages.com/id/1983342381/photo/culinary-delights-display-yokohama-chinatown-food-models.jpg?s=612x612&w=0&k=20&c=w7cfujuvC9GBCmHlCnHx04y17gbv4c3mvHvBAT5Gh3Y=" title={category} address={"Gulshan 2"} rating={4.7} distance={"1.2 km"} />
-                        <AllRestaurantsListCard imgUrl="https://media.gettyimages.com/id/1983342381/photo/culinary-delights-display-yokohama-chinatown-food-models.jpg?s=612x612&w=0&k=20&c=w7cfujuvC9GBCmHlCnHx04y17gbv4c3mvHvBAT5Gh3Y=" title={category} address={"Gulshan 2"} rating={4.7} distance={"1.2 km"} />
-                        <AllRestaurantsListCard imgUrl="https://media.gettyimages.com/id/1983342381/photo/culinary-delights-display-yokohama-chinatown-food-models.jpg?s=612x612&w=0&k=20&c=w7cfujuvC9GBCmHlCnHx04y17gbv4c3mvHvBAT5Gh3Y=" title={category} address={"Gulshan 2"} rating={4.7} distance={"1.2 km"} />
-                        <AllRestaurantsListCard imgUrl="https://popmenucloud.com/cdn-cgi/image/width%3D1200%2Cheight%3D1200%2Cfit%3Dscale-down%2Cformat%3Dauto%2Cquality%3D60/mqobygcn/3a846780-67ee-4e0b-b3f3-2e1a32ca1de1.jpg" title={category} address={"Gulshan 2"} rating={4.7} distance={"1.2 km"} />
-                        <AllRestaurantsListCard imgUrl="https://media.gettyimages.com/id/1983342381/photo/culinary-delights-display-yokohama-chinatown-food-models.jpg?s=612x612&w=0&k=20&c=w7cfujuvC9GBCmHlCnHx04y17gbv4c3mvHvBAT5Gh3Y=" title={category} address={"Gulshan 2"} rating={4.7} distance={"1.2 km"} />
-                    </View>
+                    sliderData.length > 0 ? (
+                        sliderData?.map((item, index) => (
+                            <AllRestaurantsListCard
+                                key={index}
+                                imgUrl={item?.images?.[0]?.link}
+                                title={item?.listingName}
+                                id={item?.id}
+                                address={item?.branches?.[0]?.area}
+                                rating={4.7}
+
+                            />
+                        ))
+                    ) : (
+                        
+                            <Text className="font-Poppins-Light text-center">No data available</Text>
+
+                    )
                 )}
             </View>
         </ScrollView>

@@ -7,7 +7,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import Feather from 'react-native-vector-icons/Feather';
 const DEFAULT_COUNTRY_CODE = '+880'; // Default country code
 import DateTimePicker from '@react-native-community/datetimepicker';
-const CustomModal = ({ navigation, visible, onClose,onReset  }) => {
+const CustomModal = ({ navigation, visible, onClose, onReset }) => {
     const [phoneNumber, setPhoneNumber] = useState("");
     const [ConfirmLoading, setConfirmLoading] = useState(false);
     const [show, setShow] = useState(false);
@@ -21,18 +21,31 @@ const CustomModal = ({ navigation, visible, onClose,onReset  }) => {
         firstName: '',
         lastName: '',
         email: '',
-        birthDate: new Date(),
+        birthDate: '',
     });
     const [date, setDate] = useState(new Date());
+    const showDatePicker = () => {
+        setShowDate(true); // Show DateTimePicker when pressed
+    };
+
+    // const onDateChange = (event, selectedDate) => {
+    //     setShowDate(false); // Hide DateTimePicker after selecting a date
+    //     if (selectedDate) {
+    //         setDate(selectedDate); // Update date state
+    //     }
+    // };
+
+    const formatDate = (date) => {
+        return date ? date.toISOString().split('T')[0] : 'Select Date'; // Format date as YYYY-MM-DD
+    };
+
     const onChange = (event, selectedDate) => {
         const currentDate = selectedDate || date;
         setShow(Platform.OS === "ios"); // Keep the picker open on iOS
         setDate(currentDate); // Update the date state
     };
 
-    const showDatepicker = () => {
-        setShow(true);
-    };
+
     useLayoutEffect(() => {
         if (navigation) {
             navigation.setOptions({
@@ -91,15 +104,14 @@ const CustomModal = ({ navigation, visible, onClose,onReset  }) => {
         });
     };
     const onDateChange = (event, selectedDate) => {
-        console.log(userData?.birthDate)
         const currentDate = selectedDate || userData?.birthDate;
         setShowDate(false);
         setUserData({ ...userData, birthDate: currentDate });
     };
 
-    const showDatePicker = () => {
-        setShowDate(true);
-    };
+    // const showDatePicker = () => {
+    //     setShowDate(true);
+    // };
     const handleContinuePress = async () => {
         if (currentStep === 1) {
             try {
@@ -295,16 +307,16 @@ const CustomModal = ({ navigation, visible, onClose,onReset  }) => {
             Alert.alert('Error', 'Failed to open URL. Please try again later.');
         }
     };
-    const formatDate = (date) => {
+    // const formatDate = (date) => {
 
-        if (!date) return ""; // Guard against invalid dates
-        console.log(date, "infinty find2")
-        const formattedDate = new Date(date);
-        const day = formattedDate.getDate().toString().padStart(2, "0"); // Ensure 2-digit day
-        const month = (formattedDate.getMonth() + 1).toString().padStart(2, "0"); // Ensure 2-digit month
-        const year = formattedDate.getFullYear();
-        return `${day}-${month}-${year}`;
-    };
+    //     if (!date) return ""; // Guard against invalid dates
+    //     console.log(date, "infinty find2")
+    //     const formattedDate = new Date(date);
+    //     const day = formattedDate.getDate().toString().padStart(2, "0"); // Ensure 2-digit day
+    //     const month = (formattedDate.getMonth() + 1).toString().padStart(2, "0"); // Ensure 2-digit month
+    //     const year = formattedDate.getFullYear();
+    //     return `${day}-${month}-${year}`;
+    // };
 
     const isFormFilled = () => {
         return (
@@ -470,30 +482,35 @@ const CustomModal = ({ navigation, visible, onClose,onReset  }) => {
                                         onChangeText={(text) => setUserData({ ...userData, email: text })}
                                     />
                                 </View>
-
+                                {/* <View className="flex-row space-x-2 items-center py-0" style={styles.input}>
+                                    <Ionicons name="calendar-outline" size={20} color="gray" />
+                                    <TextInput
+                                        placeholder="Enter date (YYYY-MM-DD)"
+                                        value={userData.birthDate}
+                                        onChangeText={(text) => setUserData({ ...userData, birthDate: text })}
+                                        className="flex-1 font-Poppins-Light"
+                                        keyboardType="numeric"
+                                        maxLength={10}
+                                    />
+                                </View> */}
                                 <View className="flex-row space-x-2 items-center " style={styles.input}>
 
-                                    <TouchableOpacity className="w-full flex-row py-0  " onPress={showDatePicker}>
+                                    <TouchableOpacity
+                                        className="w-full flex-row py-0"
+                                        onPress={showDatePicker}
+                                    >
                                         <Ionicons name="calendar-outline" size={20} color="gray" />
                                         {showDate && (
                                             <DateTimePicker
-                                                value={userData?.birthDate}
-                                                className="font-Poppins-Light"
                                                 mode="date"
-                                                display="default"
-                                                onChange={onDateChange}
-
+                                                display="spinner"
+                                                value={date}
+                                                onChange={onDateChange} // Handle date change
                                             />
                                         )}
-                                        <Text className=" px-1 font-Poppins-Light" > {formatDate(userData.birthDate)}</Text>
+                                        <Text className="px-2 font-Poppins-Light">{formatDate(date)}</Text>
                                     </TouchableOpacity>
 
-                                    {/* <TextInput
-                                placeholder="05-11-1994"
-                                className="flex-1"
-                                keyboardType="default"
-                            // onChangeText={handlePhoneNumberChange}
-                            /> */}
 
                                 </View>
 

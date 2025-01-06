@@ -40,8 +40,6 @@ const ReserveConfirm = ({navigation}) => {
     try {
       setConfirmLoading(true)
       const storedToken = await AsyncStorage.getItem('token');
-      // console.log(storedToken)
-
       if (storedToken) {
         const response = await instance.post('/booking', {
           branchId: bookingInfo?.branchId,

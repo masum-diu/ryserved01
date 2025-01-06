@@ -13,9 +13,12 @@ import CustomModal from '../../components/CustomModal';
 import { useIsFocused } from '@react-navigation/native';
 import Users from '../../../assets/image/user-octagon.svg'
 import Tanslate from '../../../assets/image/translate.svg'
+import DateTimePicker from '@react-native-community/datetimepicker';
+import { SafeAreaView } from 'react-native-safe-area-context';
 const ProfileScreen = () => {
     const [user, setUser] = useState(null);
-    
+    const [showDate, setShowDate] = useState(false);
+    const [date, setDate] = useState(new Date());
     const [id, setID] = useState('');
     const [toggler, setToggler] = useState(true)
     const [togglerUser, setTogglerUser] = useState(true)
@@ -34,7 +37,24 @@ const ProfileScreen = () => {
         birthDate: '',
         residenceAddress: '',
     });
+    const showDatePicker = () => {
+        setShowDate(true); // Show DateTimePicker when pressed
+    };
 
+    const onDateChange = (event, selectedDate) => {
+        setShowDate(false); // Close DateTimePicker
+        if (selectedDate) {
+            setDate(selectedDate); // Update date state
+            setFormData((prevData) => ({
+                ...prevData,
+                birthDate: selectedDate, // Update birthDate in formData
+            }));
+        }
+    };
+
+    // const formatDate = (date) => {
+    //     return date ? date?.toISOString().split('T')[0] : 'Select Date'; // Format date as YYYY-MM-DD
+    // };
     const handleChange = (field, value) => {
         setFormData((prevState) => ({
             ...prevState,
@@ -57,7 +77,9 @@ const ProfileScreen = () => {
                     // console.log(response?.data)
                     setUser(response?.data);
                     setID(response?.data?.id)
-
+                    const birthDate = response?.data.birthDate
+                        ? new Date(response?.data.birthDate)
+                        : new Date();
                     setFormData({
                         firstName: response?.data.firstName || '',
                         lastName: response?.data.lastName || '',
@@ -65,6 +87,7 @@ const ProfileScreen = () => {
                         birthDate: response?.data.birthDate || '',
                         residenceAddress: response?.data.residenceAddress || '',
                     });
+                    setDate(birthDate);
                 }
             } else {
                 setUser(null); // Reset user state if no token is found
@@ -139,7 +162,7 @@ const ProfileScreen = () => {
             title: 'My Account',
             items: [
                 {
-                    name: 'Personal information', icon: <Users width={24} height={24} stroke="blue"/>, action: () => setToggler((prev) => !prev),
+                    name: 'Personal information', icon: <Users width={24} height={24} stroke="blue" />, action: () => setToggler((prev) => !prev),
                 },
                 { name: 'Language', icon: <Tanslate width={24} height={24} />, extra: 'English (US)' },
                 { name: 'Privacy Policy', icon: <Feather name="lock" color="#DC4A45" size={24} /> },
@@ -173,213 +196,224 @@ const ProfileScreen = () => {
 
     return (
         <>
-
             {user ? (
-                <ScrollView className="p-4" style={{ backgroundColor: '#E6EAF0' }}>
-                    {/* Profile Header */}
-                    <View>
-                        {togglerUser ? <View className="flex-col justify-center items-center space-y-2 mb-4">
-                            <Image
-                                source={require('../../../assets/image/12594.png')}
-                                style={{ width: 90, height: 90 }}
-                            />
-                            <Text className="font-Poppins-Bold" style={{ fontSize: 16 }}>
-                                {user?.name}
-                            </Text>
-                        </View> : <Text className="font-Poppins-SemiBold mb-2" style={{ fontSize: 16, textAlign: "center", }}>Edit Profile</Text>}
+             
+                    <ScrollView className="p-4" style={{ backgroundColor: '#E6EAF0' }}>
+                        {/* Profile Header */}
+                        <View>
+                            {togglerUser ? <View className="flex-col justify-center items-center space-y-2 mb-4">
+                                <Image
+                                    source={require('../../../assets/image/12594.png')}
+                                    style={{ width: 90, height: 90 }}
+                                />
+                                <Text className="font-Poppins-Bold" style={{ fontSize: 16 }}>
+                                    {user?.name}
+                                </Text>
+                            </View> : <Text className="font-Poppins-SemiBold mb-2" style={{ fontSize: 16, textAlign: "center", }}>Edit Profile</Text>}
 
-                        {/* Render Sections */}
-                        {<View
-                            className="p-4 space-y-4"
-                            style={{
-                                backgroundColor: '#ffff',
-                                borderRadius: 12,
-                                // width: containerWidth,
+                            {/* Render Sections */}
+                            {<View
+                                className="p-4 space-y-4"
+                                style={{
+                                    backgroundColor: '#ffff',
+                                    borderRadius: 12,
+                                    // width: containerWidth,
 
-                            }}
-                        >
+                                }}
+                            >
 
-                            {toggler ? sections.map((section, sectionIndex) => (
-                                <View key={sectionIndex} className="space-y-3">
-                                    <Text
-                                        className="font-Poppins-SemiBold"
-                                        style={{ fontSize: 16, color: '#073064' }}
-                                    >
-                                        {section.title}
-                                    </Text>
-                                    {section.items.map((item, index) => (
-                                        <TouchableOpacity
-                                            key={index}
-                                            className="flex-row space-x-2 justify-between items-center"
-                                            onPress={item.action}
+                                {toggler ? sections.map((section, sectionIndex) => (
+                                    <View key={sectionIndex} className="space-y-3">
+                                        <Text
+                                            className="font-Poppins-SemiBold"
+                                            style={{ fontSize: 16, color: '#073064' }}
                                         >
-                                            <View className="flex-row space-x-2 items-center">
-                                                {item.icon}
-                                                <Text className="font-Poppins-Medium" style={{ fontSize: 16 }}>
-                                                    {item.name}
-                                                </Text>
-                                            </View>
-                                            {item.extra && (
-                                                <Text className="font-Poppins-Regular" style={{ fontSize: 14 }}>
-                                                    {item.extra}
-                                                </Text>
-                                            )}
-                                        </TouchableOpacity>
-                                    ))}
-                                </View>
-                            )) :
-
-                                <View
-                                > {
-                                        togglerUser ? <View className="space-y-4 ">
-                                            <View className="flex-row justify-between items-center">
-                                                <TouchableOpacity
-                                                    className="bg-white h-8 w-8 flex-row items-center justify-center rounded-md" style={{ borderColor: '#DBDBDB', borderWidth: 1 }}
-                                                    onPress={() => setToggler((prev) => !prev)}
-                                                >
-                                                    <Ionicons name="chevron-back-outline" color="#073064" size={18} />
-                                                </TouchableOpacity>
-                                                <TouchableOpacity className="bg-white h-8 w-8 flex-row items-center justify-center rounded-md" style={{ borderColor: '#DBDBDB', borderWidth: 1 }} onPress={() => setTogglerUser((prev) => !prev)}>
-                                                    <Feather name="edit" color="#073064" size={15} />
-                                                </TouchableOpacity>
-
-                                            </View>
-
-                                            <View >
-
-                                                <Text className="font-Poppins-SemiBold" style={{ fontSize: 14, color: "#073064" }}>Number</Text>
-
-
-
-                                                <View className="flex-row items-center space-x-3">
-                                                    <Image source={require('../../../assets/image/phoneflip.png')}
-                                                        style={{ width: 20, height: 20 }} />
-
-                                                    <Text className="font-Poppins-Medium" style={{ fontSize: 14, color: "#073064" }}>{user?.phoneNumber}</Text>
-                                                </View>
-
-                                            </View>
-                                            <View>
-                                                <Text className="font-Poppins-SemiBold" style={{ fontSize: 14, color: "#073064" }}>Email</Text>
-                                                <View className="flex-row items-center space-x-3">
-                                                    <Image source={require("../../../assets/image/envelope.png")} style={{ width: 20, height: 20 }} />
-
-                                                    <Text className="font-Poppins-Medium" style={{ fontSize: 14, color: "#073064" }}>{user?.email}</Text>
-                                                </View>
-
-                                            </View>
-                                            <View>
-                                                <Text className="font-Poppins-SemiBold" style={{ fontSize: 14, color: "#073064" }}>Date of Birth</Text>
-                                                <View className="flex-row items-center space-x-3">
-                                                    <Image source={require("../../../assets/image/calendar.png")} style={{ width: 20, height: 20 }} />
-                                                    <Text className="font-Poppins-Medium" style={{ fontSize: 14, color: "#073064" }}>{formatDate(user?.birthDate)}</Text>
-                                                </View>
-
-                                            </View>
-                                            <View>
-                                                <Text className="font-Poppins-SemiBold" style={{ fontSize: 14, color: "#073064" }}>Address</Text>
-                                                <View className="flex-row items-center space-x-3">
-                                                    <Image source={require("../../../assets/image/pin.png")} style={{ width: 20, height: 20 }} />
-                                                    <Text className="font-Poppins-Medium" style={{ fontSize: 14, color: "#073064" }}>{user?.residenceAddress}</Text>
-                                                </View>
-
-                                            </View>
-                                        </View>
-
-                                            : <KeyboardAvoidingView
-                                                behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-                                                style={{ flex: 1 }}
+                                            {section.title}
+                                        </Text>
+                                        {section.items.map((item, index) => (
+                                            <TouchableOpacity
+                                                key={index}
+                                                className="flex-row space-x-2 justify-between items-center"
+                                                onPress={item.action}
                                             >
-                                                <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
-                                                    <View style={styles.container}>
-                                                        <TouchableOpacity
-                                                            className="bg-white h-8 w-8 flex-row items-center justify-center rounded-md mb-2" style={{ borderColor: '#DBDBDB', borderWidth: 1 }}
-                                                            onPress={() => setTogglerUser((prev) => !prev)}
-                                                        >
-                                                            <Ionicons name="chevron-back-outline" color="#073064" size={18} />
-                                                        </TouchableOpacity>
+                                                <View className="flex-row space-x-2 items-center">
+                                                    {item.icon}
+                                                    <Text className="font-Poppins-Medium" style={{ fontSize: 16 }}>
+                                                        {item.name}
+                                                    </Text>
+                                                </View>
+                                                {item.extra && (
+                                                    <Text className="font-Poppins-Regular" style={{ fontSize: 14 }}>
+                                                        {item.extra}
+                                                    </Text>
+                                                )}
+                                            </TouchableOpacity>
+                                        ))}
+                                    </View>
+                                )) :
 
-                                                        {/* First Name */}
-                                                        <View className="flex-row space-x-2 items-center py-0" style={styles.input}>
-                                                            <Feather name="user" color="gray" size={20} />
-                                                            <TextInput
-                                                                placeholder="First Name"
-                                                                value={formData.firstName}
-                                                                onChangeText={(text) => handleChange('firstName', text)}
-                                                                className="flex-1 font-Poppins-Light"
-                                                                keyboardType="default"
-                                                            />
-                                                        </View>
+                                    <View
+                                    > {
+                                            togglerUser ? <View className="space-y-4 ">
+                                                <View className="flex-row justify-between items-center">
+                                                    <TouchableOpacity
+                                                        className="bg-white h-8 w-8 flex-row items-center justify-center rounded-md" style={{ borderColor: '#DBDBDB', borderWidth: 1 }}
+                                                        onPress={() => setToggler((prev) => !prev)}
+                                                    >
+                                                        <Ionicons name="chevron-back-outline" color="#073064" size={18} />
+                                                    </TouchableOpacity>
+                                                    <TouchableOpacity className="bg-white h-8 w-8 flex-row items-center justify-center rounded-md" style={{ borderColor: '#DBDBDB', borderWidth: 1 }} onPress={() => setTogglerUser((prev) => !prev)}>
+                                                        <Feather name="edit" color="#073064" size={15} />
+                                                    </TouchableOpacity>
 
-                                                        {/* Last Name */}
-                                                        <View className="flex-row space-x-2 items-center py-0" style={styles.input}>
-                                                            <Feather name="user" color="gray" size={20} />
-                                                            <TextInput
-                                                                placeholder="Last Name"
-                                                                value={formData.lastName}
-                                                                onChangeText={(text) => handleChange('lastName', text)}
-                                                                className="flex-1 font-Poppins-Light"
-                                                                keyboardType="default"
-                                                            />
-                                                        </View>
+                                                </View>
 
-                                                        {/* Email */}
-                                                        <View className="flex-row space-x-2 items-center py-0" style={styles.input}>
-                                                            <Ionicons name="mail-outline" size={20} color="gray" />
-                                                            <TextInput
-                                                                placeholder="Email Address"
-                                                                value={formData.email}
-                                                                onChangeText={(text) => handleChange('email', text)}
-                                                                className="flex-1 font-Poppins-Light"
-                                                                keyboardType="email-address"
-                                                            />
-                                                        </View>
+                                                <View >
 
-                                                        {/* Birth Date */}
-                                                        <View className="flex-row space-x-2 items-center py-0" style={styles.input}>
-                                                            <Ionicons name="calendar-outline" size={20} color="gray" />
-                                                            <TextInput
-                                                                placeholder="Enter date (YYYY-MM-DD)"
-                                                                value={formData.birthDate}
-                                                                onChangeText={(text) => handleChange('birthDate', text)}
-                                                                className="flex-1 font-Poppins-Light"
-                                                                keyboardType="numeric"
-                                                                maxLength={10}
-                                                            />
-                                                        </View>
+                                                    <Text className="font-Poppins-SemiBold" style={{ fontSize: 14, color: "#073064" }}>Number</Text>
 
-                                                        {/* Address */}
-                                                        <View className="flex-row space-x-2 items-center py-0" style={styles.input}>
-                                                            <Feather name="map-pin" size={20} color="gray" />
-                                                            <TextInput
-                                                                placeholder="Enter your Address"
-                                                                value={formData.residenceAddress}
-                                                                onChangeText={(text) => handleChange('residenceAddress', text)}
-                                                                className="flex-1 font-Poppins-Light"
-                                                                keyboardType="default"
-                                                            />
-                                                        </View>
 
-                                                        {/* Update Button */}
-                                                        <TouchableOpacity
-                                                            onPress={handleSubmit}
-                                                            className="bg-[#073064] w-full rounded-lg flex-row justify-center items-center"
-                                                            style={{ height: 50 }}
-                                                        >
-                                                            <Text className="text-white text-center font-Poppins-SemiBold">
-                                                                Update
-                                                            </Text>
-                                                        </TouchableOpacity>
+
+                                                    <View className="flex-row items-center space-x-3">
+                                                        <Image source={require('../../../assets/image/phoneflip.png')}
+                                                            style={{ width: 20, height: 20 }} />
+
+                                                        <Text className="font-Poppins-Medium" style={{ fontSize: 14, color: "#073064" }}>{user?.phoneNumber}</Text>
                                                     </View>
-                                                </ScrollView>
-                                            </KeyboardAvoidingView>
-                                    }
 
-                                </View>
-                            }
-                        </View>}
-                    </View>
-                </ScrollView>
+                                                </View>
+                                                <View>
+                                                    <Text className="font-Poppins-SemiBold" style={{ fontSize: 14, color: "#073064" }}>Email</Text>
+                                                    <View className="flex-row items-center space-x-3">
+                                                        <Image source={require("../../../assets/image/envelope.png")} style={{ width: 20, height: 20 }} />
+
+                                                        <Text className="font-Poppins-Medium" style={{ fontSize: 14, color: "#073064" }}>{user?.email}</Text>
+                                                    </View>
+
+                                                </View>
+                                                <View>
+                                                    <Text className="font-Poppins-SemiBold" style={{ fontSize: 14, color: "#073064" }}>Date of Birth</Text>
+                                                    <View className="flex-row items-center space-x-3">
+                                                        <Image source={require("../../../assets/image/calendar.png")} style={{ width: 20, height: 20 }} />
+                                                        <Text className="font-Poppins-Medium" style={{ fontSize: 14, color: "#073064" }}>{formatDate(user?.birthDate)}</Text>
+                                                    </View>
+
+                                                </View>
+                                                <View>
+                                                    <Text className="font-Poppins-SemiBold" style={{ fontSize: 14, color: "#073064" }}>Address</Text>
+                                                    <View className="flex-row items-center space-x-3">
+                                                        <Image source={require("../../../assets/image/pin.png")} style={{ width: 20, height: 20 }} />
+                                                        <Text className="font-Poppins-Medium" style={{ fontSize: 14, color: "#073064" }}>{user?.residenceAddress}</Text>
+                                                    </View>
+
+                                                </View>
+                                            </View>
+
+                                                : <KeyboardAvoidingView
+                                                    behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+                                                    style={{ flex: 1 }}
+                                                >
+                                                    
+                                                    <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
+                                                        <View style={styles.container}>
+                                                            <TouchableOpacity
+                                                                className="bg-white h-8 w-8 flex-row items-center justify-center rounded-md mb-2" style={{ borderColor: '#DBDBDB', borderWidth: 1 }}
+                                                                onPress={() => setTogglerUser((prev) => !prev)}
+                                                            >
+                                                                <Ionicons name="chevron-back-outline" color="#073064" size={18} />
+                                                            </TouchableOpacity>
+
+                                                            {/* First Name */}
+                                                            <View className="flex-row space-x-2 items-center py-0" style={styles.input}>
+                                                                <Feather name="user" color="gray" size={20} />
+                                                                <TextInput
+                                                                    placeholder="First Name"
+                                                                    value={formData.firstName}
+                                                                    onChangeText={(text) => handleChange('firstName', text)}
+                                                                    className="flex-1 font-Poppins-Light"
+                                                                    keyboardType="default"
+                                                                />
+                                                            </View>
+
+                                                            {/* Last Name */}
+                                                            <View className="flex-row space-x-2 items-center py-0" style={styles.input}>
+                                                                <Feather name="user" color="gray" size={20} />
+                                                                <TextInput
+                                                                    placeholder="Last Name"
+                                                                    value={formData.lastName}
+                                                                    onChangeText={(text) => handleChange('lastName', text)}
+                                                                    className="flex-1 font-Poppins-Light"
+                                                                    keyboardType="default"
+                                                                />
+                                                            </View>
+
+                                                            {/* Email */}
+                                                            <View className="flex-row space-x-2 items-center py-0" style={styles.input}>
+                                                                <Ionicons name="mail-outline" size={20} color="gray" />
+                                                                <TextInput
+                                                                    placeholder="Email Address"
+                                                                    value={formData.email}
+                                                                    onChangeText={(text) => handleChange('email', text)}
+                                                                    className="flex-1 font-Poppins-Light"
+                                                                    keyboardType="email-address"
+                                                                />
+                                                            </View>
+
+                                                            {/* Birth Date */}
+                                                            <View className="flex-row space-x-2 items-center " style={styles.input}>
+
+                                                                <TouchableOpacity
+                                                                    className="w-full flex-row py-0"
+                                                                    onPress={showDatePicker}
+                                                                >
+                                                                    <Ionicons name="calendar-outline" size={20} color="gray" />
+                                                                    {showDate && (
+                                                                        <DateTimePicker
+                                                                            mode="date"
+                                                                            display="spinner"
+                                                                            value={date}
+                                                                            onChange={onDateChange} // Handle date change
+                                                                        />
+                                                                    )}
+                                                                    <Text className="px-2 font-Poppins-Light">{formatDate(date)}</Text>
+                                                                </TouchableOpacity>
+
+
+                                                            </View>
+
+                                                            {/* Address */}
+                                                            <View className="flex-row space-x-2 items-center py-0" style={styles.input}>
+                                                                <Feather name="map-pin" size={20} color="gray" />
+                                                                <TextInput
+                                                                    placeholder="Enter your Address"
+                                                                    value={formData.residenceAddress}
+                                                                    onChangeText={(text) => handleChange('residenceAddress', text)}
+                                                                    className="flex-1 font-Poppins-Light"
+                                                                    keyboardType="default"
+                                                                />
+                                                            </View>
+
+                                                            {/* Update Button */}
+                                                            <TouchableOpacity
+                                                                onPress={handleSubmit}
+                                                                className="bg-[#073064] w-full rounded-lg flex-row justify-center items-center"
+                                                                style={{ height: 50 }}
+                                                            >
+                                                                <Text className="text-white text-center font-Poppins-SemiBold">
+                                                                    Update
+                                                                </Text>
+                                                            </TouchableOpacity>
+                                                        </View>
+                                                    </ScrollView>
+                                                </KeyboardAvoidingView>
+                                        }
+
+                                    </View>
+                                }
+                            </View>}
+                        </View>
+                    </ScrollView>
+                
             ) : (
                 <View className="flex-1 items-center justify-center space-y-8 p-4 " style={{ backgroundColor: '#E6EAF0' }}>
                     <Image source={require('../../../assets/image/team.png')} />

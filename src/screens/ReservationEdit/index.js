@@ -10,7 +10,7 @@ import { useAuth } from '../../util/AuthContext';
 import CustomSelectList from '../../components/CustomSelectList';
 
 const ReservationEdit = ({ route }) => {
-  const { id, resID, distance } = route.params || {};
+  const { id, resID, distance, } = route.params || {};
   const [loading, setLoading] = useState(true);
   const [selectedOption, setSelectedOption] = useState(null);
   const [ConfirmLoading, setConfirmLoading] = useState(false);

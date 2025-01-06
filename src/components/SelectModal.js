@@ -14,7 +14,7 @@ const SelectModal = ({ visible, options, onSelect, onClose }) => {
                                 style={styles.option}
                                 onPress={() => onSelect(item)} // Pass full object
                             >
-                                <Text style={styles.optionText}>{item.position}</Text>
+                                <Text className="font-Poppins-Light" style={styles.optionText}>{item.position}</Text>
                             </TouchableOpacity>
                         )}
                     />
