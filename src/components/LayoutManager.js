@@ -67,7 +67,7 @@ const LayoutManager = ({ data, isLoading }) => {
         <ScrollView  className="mb-20">
             <View>
                 <View style={{ backgroundColor: '#073064' }}>
-                    <TouchableOpacity>
+                    <TouchableOpacity onPress={() =>  navigation.navigate('Home', { screen: 'Search' })}>
                         <View
                             className="flex-row space-x-3 items-center m-4 px-3"
                             style={{
