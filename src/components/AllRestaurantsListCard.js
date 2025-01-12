@@ -23,7 +23,7 @@ const AllRestaurantsListCard = ({
         <TouchableOpacity className=" bg-white  shadow flex-row  mb-4  rounded-2xl" onPress={()=>navigation.navigate("ViewRestaurant",{id})} >
             <Image className="rounded-l-2xl" style={{ width: 150, height: 110 }} source={{ uri: imgUrl }} />
             <View className="px-3 pb-4 flex-1 ">
-                <Text className="font-Poppins-Medium text-lg pt-2" style={{ fontSize: 14 }}>{title}</Text>
+                <Text className="font-Poppins-Medium  pt-2" style={{ fontSize: 14 }}>{title}</Text>
                 <View className="flex-col space-x-3 mt-1">
                     <View className="flex-row space-x-1 items-center mt-1">
                     <Feather

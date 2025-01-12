@@ -85,7 +85,7 @@ const LayoutManager = ({ data, isLoading }) => {
                 </View>
 
                 <ScrollView
-                    className="mb-2"
+                    
                     contentContainerStyle={{ paddingHorizontal: 15, paddingTop: 10 }}
                     horizontal
                     showsHorizontalScrollIndicator={false}
