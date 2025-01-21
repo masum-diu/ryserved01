@@ -129,7 +129,7 @@ const CustomModal = ({ navigation, visible, onClose, onReset }) => {
                     console.log(response?.data?.otp);
                     setCurrentStep(2);
                 } else {
-                    Alert.alert('Error', 'Unexpected response from the server.');
+                    // Alert.alert('Error', 'Unexpected response from the server.');
                 }
             } catch (error) {
                 console.error('Error during OTP request:', error);
@@ -199,7 +199,7 @@ const CustomModal = ({ navigation, visible, onClose, onReset }) => {
                         // navigation.navigate('Account', { NumberItem });
                     }
                 } else {
-                    Alert.alert('Error', 'Unexpected response from the server.');
+                    // Alert.alert('Error', 'Unexpected response from the server.');
                 }
             } catch (error) {
                 console.error('Error during verification:', error);
@@ -301,10 +301,10 @@ const CustomModal = ({ navigation, visible, onClose, onReset }) => {
             if (canOpen) {
                 await Linking.openURL(url);
             } else {
-                Alert.alert('Error', 'Cannot open URL. Please check your internet connection or try again later.');
+                // Alert.alert('Error', 'Cannot open URL. Please check your internet connection or try again later.');
             }
         } catch (error) {
-            Alert.alert('Error', 'Failed to open URL. Please try again later.');
+            // Alert.alert('Error', 'Failed to open URL. Please try again later.');
         }
     };
     // const formatDate = (date) => {

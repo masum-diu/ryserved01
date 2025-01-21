@@ -25,9 +25,17 @@ const ViewRestaurant = ({ navigation }) => {
     // console.log(selectedOption)
     const [loading, setLoading] = useState(false)
     const route = useRoute();
-    const { id, resID } = route.params;
+    const { id, resID, patten } = route.params;
     // console.log(id)
-    const [selectedCategory, setSelectedCategory] = useState('Reservation');
+    const [selectedCategory, setSelectedCategory] = useState(() => {
+        if (id && patten) {
+            return 'Menu';
+        } else if (id) {
+            return 'Reservation';
+        }
+        return '';
+    });
+
     const [count, setCount] = useState(1);
     const [todaySlot, setTodaySlot] = useState(null)
     const [selectedSlot, setSelectedSlot] = useState(null);
@@ -135,7 +143,6 @@ const ViewRestaurant = ({ navigation }) => {
         // Ensure count doesn't go below 1
         setCount((prevCount) => (prevCount > 1 ? prevCount - 1 : 1));
     };
- console.log(id)
     const fetchSingleData = async () => {
 
         try {
@@ -162,11 +169,11 @@ const ViewRestaurant = ({ navigation }) => {
         fetchSingleDataevent()
     }, []);
     const handleCategoryPress = (category) => {
-        // Toggle the selected category
-        setSelectedCategory(selectedCategory === category ? category : category);
-        fetchSingleDataevent()
-        setSwithTigger(null)
+        setSelectedCategory(category); // Set the selected category
+        fetchSingleDataevent();       // Fetch the single data event
+        setSwithTigger(null);         // Reset the switch trigger
     };
+
 
     const authCheck = async () => {
         const token = await AsyncStorage.getItem('token');
@@ -510,10 +517,10 @@ style={{ width: "100%", height: 280, }} // Set your desired width and height
 
 
                         )}
-                        {selectedCategory === 'Menu' && (
+                        {selectedCategory === 'Menu' && singleData?.food && singleData.food.length > 0 ? (
+                            <MenuList menu={singleData.food} />
+                        ) : "No menu available"}
 
-                            <MenuList menu={singleData?.food} />
-                        )}
                         {selectedCategory === 'Amenities' && (
                             <Amenities data={singleData?.branches[0]?.amenities} />
 

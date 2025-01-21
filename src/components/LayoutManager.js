@@ -53,9 +53,9 @@ const LayoutManager = ({ data, isLoading }) => {
             case 'banner-ads':
                 return <BannerAds key={item.id} content={item.content} />;
             case 'promotional-logo':
-                return <Promotionallogo key={item.id} content={item.content} title={item.title} subtitle={item.subtitle} signature={item.signature} />;
+                return <Promotionallogo key={item.id} content={item.content} title={item.title} subtitle={item.subtitle} signature={item.signature}  />;
             case 'food-promotion':
-                return <Foodpromotion key={item.id} content={item.content} title={item.title} subtitle={item.subtitle} signature={item.signature} />;
+                return <Foodpromotion key={item.id} content={item.content} title={item.title} subtitle={item.subtitle} signature={item.signature} patten={item.pattern} />;
             case 'event-slider':
                 return <EventSlider key={item.id} title={item.title} subtitle={item.subtitle} content={item.content} signature={item.signature} />;
             default:

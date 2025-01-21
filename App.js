@@ -12,6 +12,7 @@ import ModifyReservation from './src/screens/ModifyReservation';
 import CancelReservation from './src/screens/CancelReservation';
 import ReservationEdit from './src/screens/ReservationEdit';
 import ViewEvent from './src/screens/ViewEvent';
+import ResultSearchView from './src/screens/ResultSearchView';
 
 
 const Stack = createNativeStackNavigator();
@@ -27,6 +28,7 @@ function RootStack() {
       <Stack.Screen name="CancelReservation" component={CancelReservation} />
       <Stack.Screen name="ReservationEdit" component={ReservationEdit} />
       <Stack.Screen name="ViewEvent" component={ViewEvent} />
+      <Stack.Screen name="ResultSearchView" component={ResultSearchView} />
     </Stack.Navigator>
   );
 }

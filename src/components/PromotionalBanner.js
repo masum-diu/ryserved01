@@ -1,4 +1,7 @@
+import { useNavigation } from '@react-navigation/native';
 import React, { useState, useEffect, useRef } from 'react';
+import { TouchableOpacity } from 'react-native';
+import { TouchableOpacityBase } from 'react-native';
 import { View, FlatList, Image, StyleSheet, Dimensions } from 'react-native';
 
 const { width } = Dimensions.get('window');
@@ -25,7 +28,7 @@ const PromotionalBanner = ({ content }) => {
             });
         }
     }, [currentIndex]);
-
+    const navigation = useNavigation();
     return (
         <View>
             <FlatList
@@ -34,9 +37,15 @@ const PromotionalBanner = ({ content }) => {
                 data={content}
                 horizontal
                 pagingEnabled
-                renderItem={({ item }) => (
-                    <Image source={{ uri: item.bannerImage }} style={styles.image} />
-                )}
+                renderItem={({ item }) => {
+                     const id = item?.linkTo;
+                    return (
+                        <TouchableOpacity onPress={() => navigation.navigate("ViewRestaurant", { id })}>
+                            <Image source={{ uri: item.bannerImage }} style={styles.image} />
+                        </TouchableOpacity>
+
+                    )
+                }}
                 showsHorizontalScrollIndicator={false}
             />
         </View>

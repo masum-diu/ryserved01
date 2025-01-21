@@ -1,5 +1,4 @@
 import { View, Text, Button, ScrollView, TouchableOpacity, ActivityIndicator, Dimensions, FlatList } from 'react-native';
-import Geolocation from '@react-native-community/geolocation';
 import React, { useCallback, useEffect, useState } from 'react';
 import { Calendar } from 'react-native-calendars';
 import CategoryCard from '../../components/CategoryCard';
@@ -8,7 +7,12 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import instance from '../../api/api_instance';
 import AllRestaurantsListCard from '../../components/AllRestaurantsListCard';
 import SearchResult from '../../components/SearchResult';
-const SearchScreen = () => {
+import { v4 as uuidv4 } from 'uuid';
+import 'react-native-get-random-values';
+import { useIsFocused, useRoute } from '@react-navigation/native';
+import { useAuth } from '../../util/AuthContext';
+
+const SearchScreen = ({ navigation }) => {
     const [selectedDate, setSelectedDate] = useState('');
     const { width, height } = Dimensions.get('window');
     const [expandedSection, setExpandedSection] = useState(null);
@@ -18,6 +22,7 @@ const SearchScreen = () => {
     const [selectedItem, setSelectedItem] = useState(null);
     const [loading, setLoading] = useState(false);
     const [cuisineDataLists, setCuisineDataLists] = useState([]);
+  
     const Seating = selectedSeating.join("_")
     const Cuisines = selectedCuisines.join("_")
     // console.log(Seating, Cuisines)
@@ -36,8 +41,7 @@ const SearchScreen = () => {
         { id: 6, name: 'Outdoor' },
         { id: 7, name: 'Corner' },
     ];
-
-
+    const { userAreaLocation } = useAuth()
     const fetchDatacuisine = async () => {
         try {
             setLoading(true);
@@ -58,7 +62,7 @@ const SearchScreen = () => {
     const fetchDataSearch = async () => {
         try {
             setLoading(true);
-            const response = await instance.get(`/RESTAURANT/search?cuisine=${Cuisines}&date=${selectedDate}&pageNo=1&perPage=50
+            const response = await instance.get(`/RESTAURANT/search?cuisine=${Cuisines}&date=${selectedDate}&area=${userAreaLocation}&pageNo=1&perPage=50
 `, {
                 headers: {
                     'Content-Type': 'application/json',
@@ -73,10 +77,11 @@ const SearchScreen = () => {
             setLoading(false);
         }
     };
-
+    const isFocused = useIsFocused();
     useEffect(() => {
         fetchDatacuisine();
-    }, []);
+        fetchDataSearch()
+    }, [isFocused]);
     // Function to handle cuisine selection
     const handleCategoryPress = useCallback((name) => {
         setExpandedSection((prevSection) => (prevSection === name ? null : name));
@@ -106,13 +111,13 @@ const SearchScreen = () => {
     const clearSelection = () => {
         setSelectedCuisines([]);
     };
-    Geolocation.getCurrentPosition();
 
+   
     return (
         <SafeAreaView className="flex-1" style={{ backgroundColor: "#E6EAF0" }}>
             <View className="p-4" >
 
-                <TouchableOpacity >
+                <TouchableOpacity onPress={() => navigation.navigate('ResultSearchView')}>
                     <View
                         className="flex-row justify-between items-center  mb-3 px-2"
                         style={{
@@ -125,14 +130,15 @@ const SearchScreen = () => {
                     >
                         <View className="flex-row items-center space-x-3">
                             <Ionicons name="search-outline" size={20} style={{ color: '#B5B5B5' }} />
-                            <Text className="font-Poppins-Regular" style={{ color: "#B5B5B5" }}>Search for restaurant </Text>
+                            <Text className="font-Poppins-Regular" style={{ color: "#B5B5B5" }}>Search {userAreaLocation}</Text>
                         </View>
-                        <TouchableOpacity className="p-1" style={{ borderWidth: 1, borderColor: "white", borderRadius: 4 }} >
+                        {/* <TouchableOpacity className="p-1" style={{ borderWidth: 1, borderColor: "white", borderRadius: 4 }} >
                             <Ionicons name="map-outline" size={18} style={{ color: '#073064' }} />
-                        </TouchableOpacity>
+                        </TouchableOpacity> */}
 
                     </View>
                 </TouchableOpacity>
+
 
                 <FlatList
                     data={cuisineData}

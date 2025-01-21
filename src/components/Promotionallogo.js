@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import { View, Image, StyleSheet, Dimensions, Text, ScrollView, ActivityIndicator } from 'react-native';
+import { View, Image, StyleSheet, Dimensions, Text, ScrollView, ActivityIndicator, TouchableOpacity } from 'react-native';
 import instance from '../api/api_instance';
+import { useNavigation } from '@react-navigation/native';
 
 const { width } = Dimensions.get('window');
 
-const Promotionallogo = ({ content, title, subtitle, signature }) => {
+const Promotionallogo = ({ content, title, subtitle, signature,}) => {
     const [loading, setLoading] = useState(false);
     const [promotionallogoData, setPromotionallogoData] = useState([]);
+        const navigation = useNavigation(); 
     const fetchSliderData = async () => {
         try {
             setLoading(true);
@@ -44,12 +46,17 @@ const Promotionallogo = ({ content, title, subtitle, signature }) => {
                 showsHorizontalScrollIndicator={false}
             >
                 {loading ? <ActivityIndicator size="small" color="#073064" /> :
-                    promotionallogoData?.map((item, index) => (
+                    promotionallogoData?.map((item, index) =>{
+                        const  id  = item?.id;
+                        return(
                         <View className="space-y-2 mr-5" key={index} style={styles.imageContainer}>
+                            <TouchableOpacity onPress={() => navigation.navigate("ViewRestaurant", {id})}>
                             <Image source={{ uri: item.logo }} style={styles.image} />
+                            </TouchableOpacity>
+                            
                             <Text className="font-Poppins-SemiBold text-xs text-center" style={{ color: "#073064" }}></Text>
                         </View>
-                    ))}
+                    )})}
             </ScrollView>
         </View>
     );

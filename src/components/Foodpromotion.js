@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { View, Image, StyleSheet, Dimensions, Text, ScrollView } from 'react-native';
+import { View, Image, StyleSheet, Dimensions, Text, ScrollView, TouchableOpacity } from 'react-native';
 import instance from '../api/api_instance';
+import { useNavigation } from '@react-navigation/native';
 
 const { width } = Dimensions.get('window');
 
-const Foodpromotion = ({ content, title, subtitle, signature }) => {
+const Foodpromotion = ({ content, title, subtitle, signature, patten }) => {
+
     const [loading, setLoading] = useState(false);
     const [foodpromotionData, setFoodpromotionData] = useState([]);
     const fetchSliderDataFoodpromotion = async () => {
@@ -28,6 +30,7 @@ const Foodpromotion = ({ content, title, subtitle, signature }) => {
     useEffect(() => {
         fetchSliderDataFoodpromotion();
     }, []);
+    const navigation = useNavigation();
     return (
         <View style={styles.container} className="pt-5 ">
             <Text className="font-Poppins-Bold px-4" style={{ fontSize: 12, color: "#FFF" }}>{title}</Text>
@@ -37,12 +40,18 @@ const Foodpromotion = ({ content, title, subtitle, signature }) => {
                 horizontal
                 showsHorizontalScrollIndicator={false}
             >
-                {foodpromotionData?.food?.map((item, index) => (
-                    <View className=" mr-3 flex-col" key={index} style={styles.imageContainer}>
-                        <Image source={{ uri: item.images[0] }} style={styles.image} />
+                {foodpromotionData?.food?.map((item, index) => {
+                    const id = item?.propertyId;
+                    return (
+                        <View className=" mr-3 flex-col" key={index} style={styles.imageContainer}>
+                            <TouchableOpacity onPress={() => navigation.navigate("ViewRestaurant", { id, patten })}>
+                                <Image source={{ uri: item.images[0] }} style={styles.image} />
+                            </TouchableOpacity>
 
-                    </View>
-                ))}
+
+                        </View>
+                    )
+                })}
 
 
             </ScrollView>
