@@ -16,6 +16,7 @@ const MenuCard = ({
     lat,
     id,
     distance,
+    price,
     onPress, 
 }) => {
     const navigation = useNavigation();
@@ -31,7 +32,7 @@ const MenuCard = ({
             <View className="px-2  flex-1 space-y-1">
                 <Text className="font-Poppins-Medium  pt-2" style={{ fontSize: 12 }}>{title}</Text>
                 <Text className="text-xs">
-                    <Text className="font-Poppins-SemiBold" style={{ color: "#B5B5B5", fontSize: 10 }}>TK {address}</Text>
+                    <Text className="font-Poppins-SemiBold" style={{ color: "#B5B5B5", fontSize: 10 }}>TK {price}</Text>
                 </Text>
                 <Text className="text-xs text-gray-500">
                     <Text className=" text-geen-500 font-Poppins-Regular" style={{ fontSize: 10 }}>{rating.slice(0, 60)}..</Text>

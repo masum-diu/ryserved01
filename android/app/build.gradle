@@ -79,11 +79,11 @@ android {
 
     namespace "com.ryserved01"
     defaultConfig {
-        applicationId "com.ryserved01"
+        applicationId "com.ethertech.ryserved_frontend"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 1
-        versionName "1.0"
+        versionCode 20
+        versionName "1.0.1"
     }
     signingConfigs {
         release {

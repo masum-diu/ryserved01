@@ -10,11 +10,11 @@ const Overview = ({ data }) => {
         <View >
           <View className="space-y-2 mb-4" >
             <Text className=" font-Poppins-SemiBold" style={{ color: "#073064",fontSize:16 }}>About</Text>
-            <Text className=" text-justify font-Poppins-Light" style={{ color: "#979797",fontSize:14 }}>{data?.description}</Text>
+            <Text className=" text-justify font-Poppins-Light" style={{ color: "#979797",fontSize:14 }}>{data?.description?.replace(/<[^>]*>/g, '')}</Text>
           </View>
           <View className="space-y-2 mb-4" >
             <Text className=" font-Poppins-SemiBold" style={{ color: "#073064",fontSize:16 }}>House Rules</Text>
-            <Text className=" text-justify font-Poppins-Light" style={{ color: "#979797",fontSize:14 }}>{data?.terms}</Text>
+            <Text className=" text-justify font-Poppins-Light" style={{ color: "#979797",fontSize:14 }}>{data?.terms?.replace(/<[^>]*>/g, '')}</Text>
           </View>
           <View className="space-y-2 mb-4" >
             <Text className="font-Poppins-SemiBold" style={{ color: "#073064",fontSize:16 }}>Opportunities</Text>

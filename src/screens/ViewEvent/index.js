@@ -115,7 +115,7 @@ const ViewEvent = ({ navigation }) => {
                 });
                 if (response?.data) {
                     // console.log(response?.data)
-                    navigation.navigate('Home', { screen: 'Reservation' });
+                    navigation.navigate('Home', { screen: 'Reservation', params: { event: true }  });
                     // if (segmentClient && segmentClient.track) {
                     //     segmentClient.track('Reservation status', { param1: 'value2' });
                     // } else {

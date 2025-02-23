@@ -22,15 +22,15 @@ const ViewRestaurant = ({ navigation }) => {
     const [timeslot, setTimeslot] = useState([])
     const [selectDate, setSelectDate] = useState('');
     const [selectedOption, setSelectedOption] = useState(null);
-    // console.log(selectedOption)
+    //  console.log(singleData)
     const [loading, setLoading] = useState(false)
     const route = useRoute();
     const { id, resID, patten } = route.params;
-    // console.log(id)
+     console.log(id)
     const [selectedCategory, setSelectedCategory] = useState(() => {
         if (id && patten) {
             return 'Menu';
-        } else if (id) {
+        } else if (id || resID) {
             return 'Reservation';
         }
         return '';

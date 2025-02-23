@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import MenuCard from './MenuCard';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 const MenuList = ({ menu }) => {
+    // console.log(menu, "menu")
     const [modalVisible, setModalVisible] = useState(false);
     const [selectedItem, setSelectedItem] = useState(null);
     // console.log(selectedItem)
@@ -15,16 +16,20 @@ const MenuList = ({ menu }) => {
         <View>
             <ScrollView showsHorizontalScrollIndicator={false}>
                 {menu.length > 0 ? (
-                    menu.map((item, index) => (
-                        <MenuCard
-                            key={index}
-                            imgUrl={item?.images?.[0]}
-                            title={item?.name}
-                            rating={item?.description}
-                            address={item?.price[0]?.small}
-                            onPress={() => openModal(item)}
-                        />
-                    ))
+                    menu.map((item, index) => {
+                        // console.log(item.price?.[0]?.price,"item")
+                        return (
+
+                            <MenuCard
+                                key={index}
+                                imgUrl={item?.images?.[0]}
+                                title={item?.name}
+                                rating={item?.description}
+                                price={item.price?.[0]?.price}
+                                onPress={() => openModal(item)}
+                            />
+                        )
+                    })
                 ) : (
                     <Text style={{ padding: 10, color: '#B5B5B5' }}>No data available</Text>
                 )}
@@ -64,12 +69,12 @@ const MenuList = ({ menu }) => {
                                         }}
                                     />
                                     <TouchableOpacity
-                                        onPress={() => setModalVisible(false)} 
+                                        onPress={() => setModalVisible(false)}
                                         style={{
                                             position: 'absolute',
                                             top: 10,
-                                            right: 10, 
-                                            backgroundColor: 'white', 
+                                            right: 10,
+                                            backgroundColor: 'white',
                                             padding: 5,
                                             borderRadius: 4,
                                         }}
@@ -79,32 +84,46 @@ const MenuList = ({ menu }) => {
                                 </View>
 
 
-                                <View className="p-4">
-                                    <Text
-                                        className="font-Poppins-Bold"
-                                        style={{
-                                            fontSize: 16,
-                                        }}
-                                    >
-                                        {selectedItem?.name}
-                                    </Text>
-                                    <Text
-                                        className="font-Poppins-Medium"
-                                        style={{
-                                            fontSize: 14,
-                                            color: '#0E0E0E',
-                                        }}
-                                    >
-                                        TK {selectedItem?.price[0]?.small}
-                                    </Text>
+                                <View className="p-4 space-y-3" >
+                                <Text
+                                            className="font-Poppins-Bold"
+                                            style={{
+                                                fontSize: 16,
+                                            }}
+                                        >
+                                            {selectedItem?.name}
+                                        </Text>
+                                    {selectedItem.price.map((item,index) => 
+                                    <View key={index} className="flex-row space-x-4 items-center w-96 ">
+                                        <Text
+                                            className="font-Poppins-Bold"
+                                            style={{
+                                                fontSize: 12,
+                                            }}
+                                        >
+                                            {item?.text}
+                                        </Text>
+                                        <Text
+                                            className="font-Poppins-Medium"
+                                            style={{
+                                                fontSize: 12,
+                                                color: '#0E0E0E',
+                                            }}
+                                        >
+                                            TK {item?.price}
+                                        </Text>
+
+                                    </View>)
+
+                                    }
                                     <Text
                                         className="font-Poppins-Regular"
                                         style={{
-                                            fontSize: 10,
+                                            fontSize: 12,
                                             color: '#B5B5B5',
                                         }}
                                     >
-                                        {selectedItem?.description}
+                                         {selectedItem?.description?.replace(/<[^>]*>/g, '')}
                                     </Text>
 
 

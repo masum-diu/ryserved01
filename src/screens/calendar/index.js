@@ -1,6 +1,6 @@
 import { View, Text, StyleSheet, ScrollView, ActivityIndicator } from 'react-native'
 import React, { useEffect, useState } from 'react'
-import { useIsFocused } from '@react-navigation/native';
+import { useIsFocused, useRoute } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import instance from '../../api/api_instance';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -9,11 +9,21 @@ import SwipingCardReservation from '../../components/SwipingCardReservation';
 import EventCard from '../../components/EventCard';
 
 const ReserveScreen = () => {
+  const route = useRoute()
+  const { event } = route.params ?? {};
   const [userData, setUserData] = useState([]);
   const [userDataEvent, setUserDataEvent] = useState([]);
-  const [selectedCategory, setSelectedCategory] = useState('Reservation');
+  const [selectedCategory, setSelectedCategory] = useState(() => {
+    if (event) {
+      return 'Events';
+    } else {
+      return 'Reservation';
+    }
+
+  });
   const [isLoading, setIsLoading] = useState(false);
   const isFocused = useIsFocused();
+
   const fetchData = async () => {
     try {
       setIsLoading(true); // Set isLoading to true before fetching data
@@ -72,12 +82,12 @@ const ReserveScreen = () => {
   }, [isFocused, selectedCategory]); // Fetch data when the screen gains focus
   const handleCategoryPress = (category) => {
     // Toggle the selected category
-    setSelectedCategory(selectedCategory === category ? category : category);
+    setSelectedCategory(category);
     fetchData(category);
   };
   return (
 
-    <SafeAreaView  style={{ flex: 1, backgroundColor: '#E6EAF0', }}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: '#E6EAF0', }}>
       <View className="flex-row justify-center items-center m-4 p-1" style={{ backgroundColor: "#DBDBDB", borderRadius: 4 }}>
         <SwipingCardReservation
           onPress={() => handleCategoryPress('Reservation')}
@@ -91,7 +101,7 @@ const ReserveScreen = () => {
         />
       </View>
       {selectedCategory && (
-        <View  className="mb-36">
+        <View className="mb-36">
           {selectedCategory === 'Reservation' && (
             isLoading ?
               <View className="h-full flex-row justify-center items-center">
@@ -150,58 +160,58 @@ const ReserveScreen = () => {
 
           {selectedCategory === 'Events' && (
             isLoading ?
-            <View className="h-full flex-row justify-center items-center">
-              <ActivityIndicator className="mt-2" size={24} color="#073064" />
-            </View>
-            : <ScrollView>
-              <View >
-                {userDataEvent?.length > 0 ? (
-                  userDataEvent.map((item, index) => {
-                    // console.log(item)
-                    //   if (!item.asset.geoTag || typeof item.asset.geoTag !== 'string') {
-                    //     return null; // Skip rendering this item if geoTag is missing or not a string
-                    //   }
-
-                    //   const [latitude, longitude] = item.asset.geoTag.split(',');
-
-                    //   const distance = userLocation
-                    //     ? calculateDistance(userLocation.latitude, userLocation.longitude, parseFloat(latitude), parseFloat(longitude))
-                    //     : null;
-                    //   const distanceText = distance ? `${distance} km` : 'Unknown';
-
-                    //   const distanceInMeters = distance ? parseFloat(distance) < 1 ? `${Math.round(parseFloat(distance) * 1000)} m` : distanceText : 'Unknown';
-                    return (
-                      <View>
-
-                        <EventCard
-                          key={item?.id}
-                          id={item?.id}
-                          status={item.status}
-                          resID={item?.propertyId}
-                          imgUrl={item?.event?.images[0]}
-                          title={item?.event?.evtName}
-                          subTitle={item?.event?.subtitle}
-                          rating={4.5}
-                          genre="Japan"
-                          address={item?.event?.location}
-                          short_descr="this is a test descr"
-                          dishes={[]}
-                          long={20}
-                          lat={0}
-                          // date={formatDate(item?.eventDate)}
-                          time={item?.slot}
-                          guest={item?.person}
-                        //   distance={distanceInMeters}
-                        />
-                      </View>
-
-                    );
-                  })
-                ) : (
-                  <Text className="font-Poppins-Regular" style={{ textAlign: 'center', marginTop: 10 }}>{isLoading ? 'Loading...' : 'No data Available'}</Text>
-                )}
+              <View className="h-full flex-row justify-center items-center">
+                <ActivityIndicator className="mt-2" size={24} color="#073064" />
               </View>
-            </ScrollView>
+              : <ScrollView>
+                <View >
+                  {userDataEvent?.length > 0 ? (
+                    userDataEvent.map((item, index) => {
+                      // console.log(item)
+                      //   if (!item.asset.geoTag || typeof item.asset.geoTag !== 'string') {
+                      //     return null; // Skip rendering this item if geoTag is missing or not a string
+                      //   }
+
+                      //   const [latitude, longitude] = item.asset.geoTag.split(',');
+
+                      //   const distance = userLocation
+                      //     ? calculateDistance(userLocation.latitude, userLocation.longitude, parseFloat(latitude), parseFloat(longitude))
+                      //     : null;
+                      //   const distanceText = distance ? `${distance} km` : 'Unknown';
+
+                      //   const distanceInMeters = distance ? parseFloat(distance) < 1 ? `${Math.round(parseFloat(distance) * 1000)} m` : distanceText : 'Unknown';
+                      return (
+                        <View>
+
+                          <EventCard
+                            key={index}
+                            id={item?.id}
+                            status={item.status}
+                            resID={item?.propertyId}
+                            imgUrl={item?.event?.images[0]}
+                            title={item?.event?.evtName}
+                            subTitle={item?.event?.subtitle}
+                            rating={4.5}
+                            genre="Japan"
+                            address={item?.event?.location}
+                            short_descr="this is a test descr"
+                            dishes={[]}
+                            long={20}
+                            lat={0}
+                            // date={formatDate(item?.eventDate)}
+                            time={item?.slot}
+                            guest={item?.person}
+                          //   distance={distanceInMeters}
+                          />
+                        </View>
+
+                      );
+                    })
+                  ) : (
+                    <Text className="font-Poppins-Regular" style={{ textAlign: 'center', marginTop: 10 }}>{isLoading ? 'Loading...' : 'No data Available'}</Text>
+                  )}
+                </View>
+              </ScrollView>
 
 
           )}

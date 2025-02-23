@@ -170,7 +170,7 @@ const ResultSearchView = () => {
                     <Ionicons name="chevron-back-outline" size={20} />
                 </TouchableOpacity>
                 <TouchableOpacity onPress={() => navigation.navigate('Home', { screen: 'Search' })}>
-                    <Text className="font-Poppins-SemiBold text-red-600">Search</Text>
+                    <Text className="font-Poppins-SemiBold " style={{color:"#073064"}}>Search</Text>
                 </TouchableOpacity>
             </View>
 
